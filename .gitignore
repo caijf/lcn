@@ -1,0 +1,10 @@
+.idea
+.DS_Store
+.include
+.browserify
+output
+dist
+dest
+node_modules
+_build
+src
