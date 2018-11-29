@@ -32,14 +32,14 @@ import lcn from 'lcn'
 import lcn from 'lcn'
 
 console.log(lcn);
-// [
-// 		{
-//			code:'110000', name: '北京市', children: [{...}]
-// 		},
-// 		{
-//			code:'120000', name: '天津市', children: [{...}]
-// 		},
-// ]
+[
+  {
+    code:'110000', name: '北京市', children: [{...}]
+  },
+  {
+    code:'120000', name: '天津市', children: [{...}]
+  },
+]
 ```
 - `lcn/lcn_pc` 默认数据格式，省/市二级联动
 
@@ -47,14 +47,14 @@ console.log(lcn);
 import lcnpc from 'lcn/lcn_pc'
 
 console.log(lcnpc);
-// [
-// 		{
-//			code:'110000', name: '北京市', children: [{...}]
-// 		},
-// 		{
-//			code:'120000', name: '天津市', children: [{...}]
-// 		},
-// ]
+[
+  {
+    code:'110000', name: '北京市', children: [{...}]
+  },
+  {
+    code:'120000', name: '天津市', children: [{...}]
+  },
+]
 ```
 
 - `lcn/lcn-form` 表单格式数据，省/市/区三级联动
@@ -65,14 +65,14 @@ console.log(lcnpc);
 import lcnForm from 'lcn/lcn-form'
 
 console.log(lcnForm);
-// [
-//  	{
-//			value:'110000', label: '北京市', children: [{...}]
-//		},
-//  	{
-// 			value:'120000', label: '天津市', children: [{...}]
-//		},
-// ]
+[
+  {
+    value:'110000', label: '北京市', children: [{...}]
+  },
+  {
+    value:'120000', label: '天津市', children: [{...}]
+  },
+]
 ```
 
 - `lcn/lcn_pc-form` 表单格式数据，省/市二级联动
@@ -83,14 +83,14 @@ console.log(lcnForm);
 import lcnpcForm from 'lcn/lcn_pc-form'
 
 console.log(lcnpcForm);
-// [
-//  	{
-//			value:'110000', label: '北京市', children: [{...}]
-//		},
-//  	{
-// 			value:'120000', label: '天津市', children: [{...}]
-//		},
-// ]
+[
+  {
+    value:'110000', label: '北京市', children: [{...}]
+  },
+  {
+    value:'120000', label: '天津市', children: [{...}]
+  },
+]
 ```
 
 - `lcn/lcn-normalize` 规整化数据，无级联，对象字面量
@@ -99,13 +99,13 @@ console.log(lcnpcForm);
 import lcnNormalize from 'lcn/lcn-normalize'
 
 console.log(lcnNormalize); 
-// {
-//		'110000': '北京市',
-// 		'110101':'东城区',
-// 		...
-// 		'120000': '天津市',
-// 		...
-// }
+{
+  '110000': '北京市',
+  '110101':'东城区',
+  ...
+  '120000': '天津市',
+  ...
+}
 ```
 
 - `lcn/lcn-origin` 元数据，无级联
@@ -114,17 +114,17 @@ console.log(lcnNormalize);
 import lcnOrigin from 'lcn/lcn-origin'
 
 console.log(lcnOrigin); 
-// [
-// 		{
-// 			code:'110000', name: '北京市'
-// 		},
-// 		{
-// 			code:'110101', name: '东城区'
-// 		},
-// 		...
-// 		{
-//			code: '120000', name: '天津市'
-//		},
-// 		...
-// ]
+[
+  {
+    code:'110000', name: '北京市'
+  },
+  {
+    code:'110101', name: '东城区'
+  },
+  ...
+  {
+    code: '120000', name: '天津市'
+  },
+  ...
+]
 ```
