@@ -7,8 +7,24 @@
     "build": "node scripts/index.js && babel src -d ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caijf/lcn.git"
+  },
+  "author": "caijf",
   "license": "MIT",
+  "keywords": [
+    "lcn",,
+    "es6"
+    "location-china",
+    "china-location",
+    "location-area",
+    "china-area"
+  ],
+  "bugs": {
+    "url": "https://github.com/caijf/lcn/issues"
+  },
+  "homepage": "https://github.com/caijf/lcn#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
