@@ -1,6 +1,6 @@
 {
   "name": "lcn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lcn.js",
   "scripts": {
@@ -14,8 +14,8 @@
   "author": "caijf",
   "license": "MIT",
   "keywords": [
-    "lcn",,
-    "es6"
+    "lcn",
+    "es6",
     "location-china",
     "china-location",
     "location-area",

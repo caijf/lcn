@@ -66,8 +66,11 @@ function format(data) {
     let provinces = [], 
         cities = [], 
         areas = [], 
-        normalData = {}, 
-        formData = [];
+        normalData = {}, // 规整化数据
+        stdData = [], // 标准数据
+        formData = [], // 表单格式数据
+        stdpcData = [], // 省市数据
+        formpcData = []; // 省市数据
 
     // 划分省市区数据
     data.forEach(item=>{
@@ -121,8 +124,42 @@ function format(data) {
     });
 
     stdData = cloneProvinces;
+    stdpcData = stdData.map(item=>{
+        let { children, ...rest } = item;
+
+        let rwChildren = [];
+
+        if(children && children.length > 0){
+            children.forEach(subItem=>{
+                let { children, ...rest } = subItem;
+                rwChildren.push(rest);
+            });
+        }
+
+        return rwChildren.length > 0 ? {
+            ...rest,
+            children: rwChildren
+        } : {...rest};
+    });
 
     formData = recursionKey(stdData);
+    formpcData = formData.map(item=>{
+        let { children, ...rest } = item;
+
+        let rwChildren = [];
+
+        if(children && children.length > 0){
+            children.forEach(subItem=>{
+                let { children, ...rest } = subItem;
+                rwChildren.push(rest);
+            });
+        }
+
+        return rwChildren.length > 0 ? {
+            ...rest,
+            children: rwChildren
+        } : {...rest};
+    })
 
     return {
         provinces,
@@ -130,7 +167,9 @@ function format(data) {
         areas,
         normalData,
         stdData,
-        formData
+        stdpcData,
+        formData,
+        formpcData
     }
 }
 
@@ -203,6 +242,10 @@ const originFilename = 'lcn-origin.js';
 const normalFilename = 'lcn-normalize.js';
 const formFilename = 'lcn-form.js';
 
+// 只级联省市数据
+const stdpcFilename = 'lcn_pc.js';
+const formpcFilename = 'lcn_pc-form.js';
+
 checkDirExist(srcRoot);
 
 http.get(url, function (res) {
@@ -227,6 +270,8 @@ http.get(url, function (res) {
         writeToFile(`${srcRoot}/${stdFilename}`, data.stdData);
         writeToFile(`${srcRoot}/${normalFilename}`, data.normalData);
         writeToFile(`${srcRoot}/${formFilename}`, data.formData);
+        writeToFile(`${srcRoot}/${stdpcFilename}`, data.stdpcData);
+        writeToFile(`${srcRoot}/${formpcFilename}`, data.formpcData);
 
     })
 }).on('error', function () {
