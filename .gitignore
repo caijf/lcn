@@ -8,3 +8,4 @@ dest
 node_modules
 _build
 src
+package-lock.json
