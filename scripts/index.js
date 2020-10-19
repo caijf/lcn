@@ -11,6 +11,10 @@ const PROVINCE_FILE = path.join(root, 'province.js');
 const CITY_FILE = path.join(root, 'city.js');
 const AREA_FILE = path.join(root, 'area.js');
 
+// 不包含港澳台的级联数据
+const MODULE_INLAND_FILE = path.join(root, 'lcn-inland.js');
+const MODULE_INLAND_FORM_FILE = path.join(root, 'lcn-form-inland.js');
+
 // 转换form数据
 function transformFormData(data) {
   return data.map(item => {
@@ -23,6 +27,14 @@ function transformFormData(data) {
     }
     return ret;
   })
+}
+
+// 非内地省代码
+const notInlandCode = ['710000', '810000', '820000'];
+
+// 过滤内地省份
+function filterInland(data, codeField = 'code') {
+  return data.filter(item => notInlandCode.indexOf(item[codeField]) === -1);
 }
 
 createData().then(() => {
@@ -78,6 +90,11 @@ createData().then(() => {
   writeToFile(MODULE_FILE, wrapperUmd('lcn', JSON.stringify(provinces)));
   // 级联数据，兼容表单
   writeToFile(MODULE_FORM_FILE, wrapperUmd('lcnForm', JSON.stringify(provincesForm)));
+
+  // 内地级联数据
+  writeToFile(MODULE_INLAND_FILE, wrapperUmd('lcnInland', JSON.stringify(filterInland(provinces))));
+  // 内地级联数据，兼容表单
+  writeToFile(MODULE_INLAND_FORM_FILE, wrapperUmd('lcnInlandForm', JSON.stringify(filterInland(provincesForm, 'value'))));
 
   // 全部数据
   writeToFile(DATA_FILE, wrapperUmd('lcnData', JSON.stringify(originData.data)));
