@@ -1,10 +1,10 @@
 {
   "name": "lcn",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "",
-  "main": "lcn.js",
+  "main": "lib/lcn.js",
   "scripts": {
-    "build": "node scripts/index.js && babel src -d ./",
+    "build": "node scripts/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,13 +26,7 @@
   },
   "homepage": "https://github.com/caijf/lcn#readme",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-react": "^7.9.1",
     "cheerio": "^1.0.0-rc.3",
-    "iconv-lite": "^0.5.1",
-    "json2csv": "^4.3.1"
+    "iconv-lite": "^0.6.2"
   }
 }
