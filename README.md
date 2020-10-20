@@ -13,9 +13,9 @@
 模块  | 数据格式 | 描述
 ------------- | ------------- | -------------
 `lcn` | array<{code, name, children}> | 默认数据格式，省/市/区三级联动
-`lcn/lcn-inland` | array<{code, name, children}> | 默认数据格式，省/市/区三级联动，不包含港澳台。
 `lcn/lcn-form` | array<{value, label, children}> | 表单数据格式，省/市/区三级联动，可直接应用于 `antd` `element-ui` 级联组件
 `lcn/lcn-form-inland` | array<{value, label, children}> | 表单数据格式，省/市/区三级联动，可直接应用于 `antd` `element-ui` 级联组件。不包含港澳台。
+`lcn/lcn-form-pc` | array<{value, label, children}> | 表单数据格式，省/市联动，可直接应用于 `antd` `element-ui` 级联组件。不包含港澳台。
 `lcn/data` | array<{code, name}> | 全部数据，无级联。
 `lcn/province` | array<{code, name}> | 省份数据
 `lcn/city` | array<{code, name}> | 市级数据
@@ -145,7 +145,7 @@ npm install lcn --save
   - 南沙群岛(460322)
   - 中沙群岛的岛礁及其海域(460323)
 
-### 2. 级联数据 `lcn`、`lcn-form` 中
+### 2. 级联数据 `lcn` `lcn-form` ...
 
   - `直辖市` 补充市级数据
     - 北京市
