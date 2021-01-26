@@ -1,4 +1,4 @@
-import { baseData } from './types/index';
+import { baseData } from './interface';
 
 declare module 'lcn/area' {
   export default baseData;

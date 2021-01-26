@@ -10,5 +10,5 @@ interface FormData {
   children?: FormData[];
 }
 
-export declare const baseData: BaseData[];
-export declare const formData: FormData[];
+export const baseData: BaseData[];
+export const formData: FormData[];

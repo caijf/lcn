@@ -1,4 +1,4 @@
-import { formData } from './types/index';
+import { formData } from './interface';
 
 declare module 'lcn/lcn-form-inland' {
   export default formData;
