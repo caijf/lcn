@@ -1,6 +1,6 @@
 {
   "name": "lcn",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "中华人民共和国行政区划，省市区数据",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -76,8 +76,5 @@
     "rollup": "^2.50.0",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.2.4"
-  },
-  "dependencies": {
-    "tslib": "^2.2.0"
   }
 }
