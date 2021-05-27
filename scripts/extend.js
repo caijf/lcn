@@ -1,5 +1,7 @@
-// 级联，市级数据补充
-const cityExtend = [
+// 补充数据，直辖市市级、部分行政区划
+
+// 市级数据
+const cities = [
   // 直辖市
   {
     code: '110100',
@@ -29,8 +31,8 @@ const cityExtend = [
   }
 ];
 
-// 源数据缺失
-const dataExtend = [
+// 区级数据
+const areas = [
   // 海南省三沙市县级行政区
   {
     code: '460321',
@@ -47,6 +49,6 @@ const dataExtend = [
 ];
 
 module.exports = {
-  dataExtend,
-  cityExtend
+  areas,
+  cities
 };

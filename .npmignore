@@ -1,8 +1,0 @@
-package-lock.json
-src
-node_modules
-.gitignore
-babel.config.js
-scripts
-.npmignore
-dist

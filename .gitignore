@@ -4,8 +4,11 @@
 .browserify
 output
 dist
+types
+lib
+es
 dest
 node_modules
 _build
-src
 package-lock.json
+yarn.lock

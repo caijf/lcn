@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.rollup.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true
+  }
+}

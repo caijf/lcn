@@ -6,158 +6,181 @@
 
 当前数据
 
-- [2020年8月中华人民共和国县以上行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2018/201804-12/20181011221630.html)
+- [2020 年 12 月中华人民共和国县以上行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
 
 ## 多种数据格式
 
-模块  | 数据格式 | 描述
-------------- | ------------- | -------------
-`lcn` | array<{code, name, children}> | 默认数据格式，省/市/区三级联动
-`lcn/lcn-form` | array<{value, label, children}> | 表单数据格式，省/市/区三级联动，可直接应用于 `antd` `element-ui` 级联组件
-`lcn/lcn-form-inland` | array<{value, label, children}> | 表单数据格式，省/市/区三级联动，可直接应用于 `antd` `element-ui` 级联组件。不包含港澳台。
-`lcn/lcn-form-pc` | array<{value, label, children}> | 表单数据格式，省/市联动，可直接应用于 `antd` `element-ui` 级联组件。不包含港澳台。
-`lcn/data` | array<{code, name}> | 全部数据，无级联。
-`lcn/province` | array<{code, name}> | 省份数据
-`lcn/city` | array<{code, name}> | 市级数据
-`lcn/area` | array<{code, name}> | 区级数据
+| 文件             | 数据格式                       | 描述                 |
+| ---------------- | ------------------------------ | -------------------- |
+| [pca.json]       | Array<{code, name, children?}> | 省/市/区三级联动数据 |
+| [pc.json]        | Array<{code, name, children?}> | 省/市二级联动数据    |
+| [data.json]      | Array<{code, name}>            | 全部数据             |
+| [provinces.json] | Array<{code, name}>            | 省份数据             |
+| [cities.json]    | Array<{code, name}>            | 市级数据             |
+| [areas.json]     | Array<{code, name}>            | 区级数据             |
 
 ## 使用
 
-安装
+### 安装
 
-```shell
-npm install lcn --save
+```bash
+npm install lcn
 ```
 
-### lcn
+or
 
-默认格式的级联省市区数据。
+```bash
+yarn add lcn
+```
+
+### 示例
+
+```typescript
+import { data, getPCA, getPC, getProvinces, getCities, getAreas } from 'lcn';
+
+const pca = getPCA({ formatForm: true }); // 获取省市区三级联动表单格式数据
+console.log(pca);
+```
+
+## 文档
+
+### getPCA(options)
+
+> - options &lt;Object&gt; 配置项
+> - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
+> - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
+
+获取省/市/区三级联动数据。
+
+`formatForm` 为 `true` 时，数据可直接用于 `antd` `element-ui` 的表单组件中。
 
 ```javascript
-// import lcn from 'lcn';
+import { getPCA } from 'lcn';
+
+const data1 = getPCA();
+console.log(data1);
 
 [
   {
-    "code":"110000",
-    "name":"北京市",
-    "children":[{
-      "code":"110100",
-      "name":"北京市",
-      "children":[
-        {"code":"110101","name":"东城区"},
-        {"code":"110102","name":"西城区"},
-        // ...
-      ]
-    }],
+    code: '110000',
+    name: '北京市',
+    children: [
+      // ...
+    ],
   },
   // ...
-]
-```
+  { code: '710000', name: '台湾省' },
+  { code: '810000', name: '香港特别行政区' },
+  { code: '820000', name: '澳门特别行政区' },
+];
 
-### lcn-form
+const data2 = getPCA({ inland: true, formatForm: true });
+console.log(data2);
 
-表单格式的省市区数据。
-
-```javascript
-// import lcn from 'lcn/lcn-form';
 [
   {
-    "value":"110000",
-    "label":"北京市",
-    "children":[{
-      "value":"110100",
-      "label":"北京市",
-      "children":[
-        {"value":"110101","label":"东城区"},
-        {"value":"110102","label":"西城区"},
-        // ...
-      ]
-    }],
+    value: '110000',
+    label: '北京市',
+    children: [
+      // ...
+    ],
   },
   // ...
-]
+];
 ```
+
+### getPC(options)
+
+> - options &lt;Object&gt; 配置项
+> - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
+> - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
+
+获取省/市二级联动数据。其余同 `getPCA` 方法。
 
 ### data
 
 全部数据，无级联。
 
 ```javascript
-// import lcnData from 'lcn/data';
-
 [
-  {"code":"110000","name":"北京市"},
-  {"code":"110101","name":"东城区"},
-  {"code":"110102","name":"西城区"},
+  { code: '110000', name: '北京市' },
+  { code: '110100', name: '北京市' },
+  { code: '110101', name: '东城区' },
+  { code: '110102', name: '西城区' },
   // ...
-]
+];
 ```
 
-### province
+### getProvinces()
 
-省份数据。
+获取全部省份数据。
 
 ```javascript
-// import lcnData from 'lcn/province';
-
 [
-  {"code":"110000","name":"北京市"},
-  {"code":"120000","name":"天津市"},
+  { code: '110000', name: '北京市' },
+  { code: '120000', name: '天津市' },
   // ...
-]
+];
 ```
 
-### city
+### getCities()
 
-市级数据。
+获取全部市级数据。
 
 ```javascript
-// import lcnData from 'lcn/city';
-
 [
-  {"code":"130100","name":"石家庄市"},
-  {"code":"130200","name":"唐山市"},
-  {"code":"130300","name":"秦皇岛市"},
   // ...
-]
+  { code: '130100', name: '石家庄市' },
+  { code: '130200', name: '唐山市' },
+  { code: '130300', name: '秦皇岛市' },
+  // ...
+];
 ```
 
-### area
+### getAreas()
 
-区级数据。
+获取全部区级数据。
 
 ```javascript
-// import lcnData from 'lcn/area';
-
 [
-  {"code":"110101","name":"东城区"},
-  {"code":"110102","name":"西城区"},
-  {"code":"110105","name":"朝阳区"},
+  { code: '110101', name: '东城区' },
+  { code: '110102', name: '西城区' },
+  { code: '110105', name: '朝阳区' },
   // ...
-]
+];
 ```
 
-## 注意
+## 注意，以下数据修正
 
-### 1. 全部数据补充海南省三沙市区级数据，数据源自[国家统计局 - 统计用区划和城乡划分代码](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/46/4603.html)
+### 1. 直辖市补充`市级数据`
 
-  - 西沙群岛(460321)
-  - 南沙群岛(460322)
-  - 中沙群岛的岛礁及其海域(460323)
+- 北京市(110000)
+  - **北京市(110100)**
+- 天津市(120000)
+  - **天津市(120100)**
+- 上海市(310000)
+  - **上海市(310100)**
+- 重庆市(500000)
+  - **重庆市(500100)**
 
-### 2. 级联数据 `lcn` `lcn-form` ...
+### 2. 部分省补充县级行政区划
 
-  - `直辖市` 补充市级数据
-    - 北京市
-    - 天津市
-    - 上海市
-    - 重庆市
-  - 海南省补充市级数据
-    - [省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/46.html)
-  - 新疆维吾尔族自治区补充市级数据
-    - [自治区直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2019/65.html)
+- 海南省(460000)
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/46.html)(469000)**
+- 新疆维吾尔自治区(650000)
+  - **[自治区直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/65.html)(659000)**
 
-### 3. 以下几个[特殊地级市](https://baike.baidu.com/item/%E5%9C%B0%E7%BA%A7%E5%B8%82/2089621?fr=aladdin#4_1)，属于“不设区的市”：
+### 3. 海南省三沙市补充区级数据
+
+> 数据源自[国家统计局 - 统计用区划和城乡划分代码](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/46/4603.html)
+
+- 海南省(460000)
+  - 三沙市(460300)
+    - **西沙群岛(460321)**
+    - **南沙群岛(460322)**
+    - **中沙群岛的岛礁及其海域(460323)**
+
+### 4. 以下几个[特殊地级市]，属于“不设区的市”：
 
 - 广东省东莞市(441900)
 - 广东省中山市(442000)
@@ -166,5 +189,16 @@ npm install lcn --save
 
 ## 参考
 
-- [民政部 - 行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2020/)
-- [国家统计局 - 统计用区划和城乡划分代码](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/)
+- [民政部 - 行政区划代码]
+- [国家统计局 - 统计用区划和城乡划分代码]
+- [特殊地级市]
+
+[民政部 - 行政区划代码]: http://www.mca.gov.cn/article/sj/xzqh/2020/
+[国家统计局 - 统计用区划和城乡划分代码]: http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
+[特殊地级市]: https://baike.baidu.com/item/%E5%9C%B0%E7%BA%A7%E5%B8%82/2089621?fr=aladdin#4_1
+[pca.json]: https://github.com/caijf/lcn/tree/master/data/pca.json
+[pc.json]: https://github.com/caijf/lcn/tree/master/data/pc.json
+[data.json]: https://github.com/caijf/lcn/tree/master/data/data.json
+[provinces.json]: https://github.com/caijf/lcn/tree/master/data/provinces.json
+[cities.json]: https://github.com/caijf/lcn/tree/master/data/cities.json
+[areas.json]: https://github.com/caijf/lcn/tree/master/data/areas.json

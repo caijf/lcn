@@ -23,29 +23,6 @@ function checkDirExist(folderpath) {
   }
 }
 
-/**
- * 包裹为umd模块
- * @param {string} code 代码
- */
-function wrapperUmd(globalName, code) {
-  return `
-  (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-      // AMD (Register as an anonymous module)
-      define([], factory);
-    } else if (typeof exports === 'object') {
-      // Node/CommonJS
-      module.exports = factory();
-    } else {
-      // Browser globals
-      root.${globalName} = factory();
-    }
-  }(this, function () {
-      return ${code};
-  }));
-`
-}
-
 // 将内容写入文件
 function writeToFile(filename, data) {
   let str = data;
@@ -67,12 +44,12 @@ function writeToFile(filename, data) {
   });
 }
 
-// 获取省级码
+// 获取省份码
 function getProvinceCode(code) {
   return code.substr(0, 2);
 }
 
-// 获取区级码
+// 获取市级码
 function getCityCode(code) {
   return code.substr(0, 4);
 }
@@ -89,7 +66,6 @@ function isCityCode(code) {
 
 module.exports = {
   checkDirExist,
-  wrapperUmd,
   writeToFile,
   isProvinceCode,
   isCityCode,
