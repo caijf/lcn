@@ -10,6 +10,8 @@ import {
   CascadeDataForm,
 } from "./util";
 
+export type { CascadeData, CascadeDataForm };
+
 export interface CascaderOption {
   inland?: boolean;
   formatForm?: boolean;
