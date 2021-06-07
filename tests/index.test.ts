@@ -1,7 +1,7 @@
 import { data, getAreas, getCities, getProvinces, getPC, getPCA } from '../src';
 import areasTest from './shared/areasTest';
 import citiesTest from './shared/citiesTest';
-import ProvincesTest from './shared/ProvincesTest';
+import ProvincesTest from './shared/provincesTest';
 import dataTest from './shared/dataTest';
 import pcTest from './shared/pcTest';
 import pcFormTest from './shared/pcFormTest';
