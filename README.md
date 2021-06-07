@@ -1,5 +1,8 @@
 # lcn
 
+[![npm][npm]][npm-url]
+![GitHub](https://img.shields.io/github/license/caijf/lcn.svg)
+
 中华人民共和国行政区划，省市区数据
 
 ## 数据来源
@@ -202,3 +205,5 @@ console.log(data2);
 [provinces.json]: https://github.com/caijf/lcn/tree/master/data/provinces.json
 [cities.json]: https://github.com/caijf/lcn/tree/master/data/cities.json
 [areas.json]: https://github.com/caijf/lcn/tree/master/data/areas.json
+[npm]: https://img.shields.io/npm/v/lcn.svg
+[npm-url]: https://npmjs.com/package/lcn
