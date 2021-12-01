@@ -58,15 +58,15 @@ function initPC() {
     const newItem: CascadeData = {
       ...item,
     };
+    if (!newItem.children) {
+      newItem.children = [];
+    }
 
     __pc.push(newItem);
 
     cities.forEach((cityItem) => {
       if (getProvinceCode(cityItem.code) === getProvinceCode(item.code)) {
-        if (!newItem.children) {
-          newItem.children = [];
-        }
-        newItem.children.push(cityItem);
+        newItem.children!.push(cityItem);
       }
     });
   });
@@ -108,15 +108,16 @@ function initPCA() {
   const newCities: CascadeData[] = getCities().map((item) => ({ ...item }));
 
   newCities.forEach((cityItem) => {
+    if (!cityItem.children) {
+      cityItem.children = [];
+    }
+
     data.forEach((item) => {
       if (
         isAreaCode(item.code) &&
         getCityCode(item.code) === getCityCode(cityItem.code)
       ) {
-        if (!cityItem.children) {
-          cityItem.children = [];
-        }
-        cityItem.children.push({ ...item });
+        cityItem.children!.push({ ...item });
       }
     });
   });
@@ -126,12 +127,12 @@ function initPCA() {
   }));
 
   newProvinces.forEach((item) => {
+    if (!item.children) {
+      item.children = [];
+    }
     newCities.forEach((cityItem) => {
       if (getProvinceCode(item.code) === getProvinceCode(cityItem.code)) {
-        if (!item.children) {
-          item.children = [];
-        }
-        item.children.push(cityItem);
+        item.children!.push(cityItem);
       }
     });
   });
