@@ -1,7 +1,6 @@
 # lcn
 
-[![npm][npm]][npm-url]
-![GitHub](https://img.shields.io/github/license/caijf/lcn.svg)
+[![npm][npm]][npm-url] ![GitHub](https://img.shields.io/github/license/caijf/lcn.svg)
 
 中华人民共和国行政区划，省市区数据
 
@@ -12,6 +11,8 @@
 - [2020 年 12 月中华人民共和国县以上行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
 
 ## 多种数据格式
+
+> 如果在客户端中使用，并且没有用到全部数据，建议保存对应数据到本地。比如只用到省市联动数据，将 `pc.json` 保存本地即可。
 
 | 文件             | 数据格式                       | 描述                 |
 | ---------------- | ------------------------------ | -------------------- |
@@ -39,7 +40,7 @@ yarn add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, getProvinces, getCities, getAreas } from 'lcn';
+import { data, getPCA, getPC, getProvinces, getCities, getAreas } from "lcn";
 
 const pca = getPCA({ formatForm: true }); // 获取省市区三级联动表单格式数据
 console.log(pca);
@@ -58,23 +59,23 @@ console.log(pca);
 `formatForm` 为 `true` 时，数据可直接用于 `antd` `element-ui` 的表单组件中。
 
 ```javascript
-import { getPCA } from 'lcn';
+import { getPCA } from "lcn";
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: '110000',
-    name: '北京市',
+    code: "110000",
+    name: "北京市",
     children: [
       // ...
     ],
   },
   // ...
-  { code: '710000', name: '台湾省' },
-  { code: '810000', name: '香港特别行政区' },
-  { code: '820000', name: '澳门特别行政区' },
+  { code: "710000", name: "台湾省" },
+  { code: "810000", name: "香港特别行政区" },
+  { code: "820000", name: "澳门特别行政区" },
 ];
 
 const data2 = getPCA({ inland: true, formatForm: true });
@@ -82,8 +83,8 @@ console.log(data2);
 
 [
   {
-    value: '110000',
-    label: '北京市',
+    value: "110000",
+    label: "北京市",
     children: [
       // ...
     ],
@@ -106,10 +107,10 @@ console.log(data2);
 
 ```javascript
 [
-  { code: '110000', name: '北京市' },
-  { code: '110100', name: '北京市' },
-  { code: '110101', name: '东城区' },
-  { code: '110102', name: '西城区' },
+  { code: "110000", name: "北京市" },
+  { code: "110100", name: "北京市" },
+  { code: "110101", name: "东城区" },
+  { code: "110102", name: "西城区" },
   // ...
 ];
 ```
@@ -120,8 +121,8 @@ console.log(data2);
 
 ```javascript
 [
-  { code: '110000', name: '北京市' },
-  { code: '120000', name: '天津市' },
+  { code: "110000", name: "北京市" },
+  { code: "120000", name: "天津市" },
   // ...
 ];
 ```
@@ -133,9 +134,9 @@ console.log(data2);
 ```javascript
 [
   // ...
-  { code: '130100', name: '石家庄市' },
-  { code: '130200', name: '唐山市' },
-  { code: '130300', name: '秦皇岛市' },
+  { code: "130100", name: "石家庄市" },
+  { code: "130200", name: "唐山市" },
+  { code: "130300", name: "秦皇岛市" },
   // ...
 ];
 ```
@@ -146,9 +147,9 @@ console.log(data2);
 
 ```javascript
 [
-  { code: '110101', name: '东城区' },
-  { code: '110102', name: '西城区' },
-  { code: '110105', name: '朝阳区' },
+  { code: "110101", name: "东城区" },
+  { code: "110102", name: "西城区" },
+  { code: "110105", name: "朝阳区" },
   // ...
 ];
 ```
