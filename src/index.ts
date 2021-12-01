@@ -80,8 +80,12 @@ function recursionTransformFormat(datalist: CascadeData[]) {
       value: item.code,
       label: item.name,
     };
-    if (Array.isArray(item.children) && item.children.length > 0) {
-      newItem.children = recursionTransformFormat(item.children);
+    if (Array.isArray(item.children)) {
+      if (item.children.length > 0) {
+        newItem.children = recursionTransformFormat(item.children);
+      } else {
+        newItem.children = [];
+      }
     }
     ret.push(newItem);
   });
