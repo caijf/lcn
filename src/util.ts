@@ -12,22 +12,22 @@ export interface CascadeDataForm {
 
 // 获取省份码
 export function getProvinceCode(code: string) {
-  return code.substr(0, 2);
+  return code.substring(0, 2);
 }
 
 // 获取市级码
 export function getCityCode(code: string) {
-  return code.substr(0, 4);
+  return code.substring(0, 4);
 }
 
 // 是否为省份码
 export function isProvinceCode(code: string) {
-  return code.substr(2, 4) === "0000";
+  return code.substring(2, 6) === "0000";
 }
 
 // 是否为市级码
 export function isCityCode(code: string) {
-  return !isProvinceCode(code) && code.substr(4, 2) === "00";
+  return !isProvinceCode(code) && code.substring(4, 6) === "00";
 }
 
 // 是否为区级码

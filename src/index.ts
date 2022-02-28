@@ -93,6 +93,12 @@ function recursionTransformFormat(datalist: CascadeData[]) {
 }
 
 // 获取省市联动数据
+function getPC(
+  options?: CascaderOption & { formatForm: true }
+): CascadeDataForm[];
+function getPC(
+  options?: CascaderOption & { formatForm?: false }
+): CascadeData[];
 function getPC(options?: CascaderOption) {
   const { inland = false, formatForm = false } = options || {};
   if (!__pc) {
@@ -143,6 +149,13 @@ function initPCA() {
   __pca = newProvinces;
 }
 
+// 获取省市区联动数据
+function getPCA(
+  options?: CascaderOption & { formatForm: true }
+): CascadeDataForm[];
+function getPCA(
+  options?: CascaderOption & { formatForm?: false }
+): CascadeData[];
 function getPCA(options?: CascaderOption) {
   const { inland = false, formatForm = false } = options || {};
   if (!__pca) {

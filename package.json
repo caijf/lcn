@@ -12,7 +12,8 @@
     "build:types": "rm -rf types && tsc --outDir types",
     "test": "jest --verbose",
     "precommit": "lint-staged",
-    "commit": "cz"
+    "commit": "cz",
+    "prepublishOnly": "npm run build && npm test"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
