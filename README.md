@@ -48,9 +48,17 @@ console.log(pca);
 
 ## 文档
 
+- getPCA - 获取省/市/区三级联动数据
+- getPC - 获取省/市二级联动数据
+- data - 全部数据
+- getProvinces - 获取全部省份数据
+- getCities - 获取全部市级数据
+- getAreas - 获取全部区级数据
+- parseAreaCode - 解析地区码
+
 ### getPCA(options)
 
-> - options &lt;Object&gt; 配置项
+> - options &lt;object&gt; 配置项
 > - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
 > - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
 
@@ -95,7 +103,7 @@ console.log(data2);
 
 ### getPC(options)
 
-> - options &lt;Object&gt; 配置项
+> - options &lt;object&gt; 配置项
 > - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
 > - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
 
@@ -154,22 +162,43 @@ console.log(data2);
 ];
 ```
 
+### parseAreaCode(areaCode)
+
+> - areaCode &lt;string&gt; 地区码
+
+解析地区码，返回一个元祖 `[省,市,区]`
+
+```javascript
+parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
+parseAreaCode("000000"); // => [null, null, null];
+```
+
 ## 注意，以下数据修正
 
 ### 1. 直辖市补充`市级数据`
 
-- **北京市(110100)**
-- **天津市(120100)**
-- **上海市(310100)**
-- **重庆市(500100)**
-- **县(500200)**
+- 北京市(110000)
+  - **北京市(110100)**
+- 天津市(120000)
+  - **天津市(120100)**
+- 上海市(310000)
+  - **上海市(310100)**
+- 重庆市(500000)
+  - **重庆市(500100)**
+  - **县(500200)**
 
 ### 2. 部分省补充县级行政区划
 
 - 海南省(460000)
-  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/46.html)(469000)**
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/46.html)(469000)**
 - 新疆维吾尔自治区(650000)
-  - **[自治区直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/65.html)(659000)**
+  - **[自治区直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/65.html)(659000)**
+- 河南省(410000)
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/41.html)(419000)**
+- 湖北省(420000)
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/42.html)(429000)**
 
 ### 3. 海南省三沙市补充区级数据
 

@@ -171,4 +171,44 @@ function getPCA(options?: CascaderOption) {
   return formatForm ? recursionTransformFormat(internalPCA) : internalPCA;
 }
 
-export { data, getProvinces, getCities, getAreas, getPC, getPCA };
+type ParseItem = null | { code: string; name: string };
+type ParseProvinceItem = ParseItem;
+type ParseCityItem = ParseItem;
+type ParseAreaItem = ParseItem;
+
+// 解析地区码
+function parseAreaCode(
+  areaCode: string
+): [ParseProvinceItem, ParseCityItem, ParseAreaItem] {
+  if (typeof areaCode !== "string" || areaCode.length !== 6) {
+    return [null, null, null];
+  }
+
+  const provinceCode = getProvinceCode(areaCode) + "0000";
+  const provinceInfo = data.find((item) => item.code === provinceCode) || null;
+
+  if (areaCode === provinceCode) {
+    return [provinceInfo, null, null];
+  }
+
+  const cityCode = getCityCode(areaCode) + "00";
+  const cityInfo = data.find((item) => item.code === cityCode) || null;
+
+  if (areaCode === cityCode) {
+    return [provinceInfo, cityInfo, null];
+  }
+
+  const areaInfo = data.find((item) => item.code === areaCode) || null;
+
+  return [provinceInfo, cityInfo, areaInfo];
+}
+
+export {
+  data,
+  getProvinces,
+  getCities,
+  getAreas,
+  getPC,
+  getPCA,
+  parseAreaCode,
+};

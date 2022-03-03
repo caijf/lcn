@@ -1,6 +1,6 @@
 function citiesTest(data) {
   it("检查数据", () => {
-    expect(data.length).toBe(340);
+    expect(data.length).toBe(342);
     // expect(data[0]).toEqual({ code: '110100', name: '北京市' });
     // expect(data[data.length - 1]).toEqual({ code: '659000', name: '自治区直辖县级行政区划' });
     // // 不包含区
