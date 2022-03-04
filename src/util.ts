@@ -42,3 +42,20 @@ const notInlandProvinceCode = ["71", "81", "82"];
 export const isInland = (code: string) => {
   return !notInlandProvinceCode.includes(getProvinceCode(code));
 };
+
+// ref: scripts/extend.js
+// 直辖县的市级
+const crownCountryCityCodes = [
+  "110100",
+  "310100",
+  "500100",
+  "500200",
+  "120100",
+  "469000",
+  "659000",
+  "419000",
+  "429000",
+];
+// 是否为直辖市或直辖县的市级
+export const isCrownCountryCityCode = (code: string) =>
+  crownCountryCityCodes.includes(code);

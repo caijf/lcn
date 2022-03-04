@@ -40,12 +40,12 @@ yarn add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, parseAreaCode } from 'lcn';
+import { data, getPCA, getPC, parseAreaCode } from "lcn";
 
 // 获取内地省市区三级联动表单格式数据
 const pca = getPCA({
   inland: true,
-  fieldNames: { code: 'value', name: 'label' },
+  fieldNames: { code: "value", name: "label" },
 });
 console.log(pca);
 ```
@@ -67,6 +67,7 @@ console.log(pca);
   - isInland - 是否为大陆内地区码
   - getProvinceCode - 获取 2 位省级编码
   - getCityCode - 获取 4 位市级编码
+  - isCrownCountryCityCode - 是否为直辖市或直辖县的市级编码
 
 ### data
 
@@ -74,10 +75,10 @@ console.log(pca);
 
 ```typescript
 [
-  { code: '110000', name: '北京市' },
-  { code: '110100', name: '北京市' },
-  { code: '110101', name: '东城区' },
-  { code: '110102', name: '西城区' },
+  { code: "110000", name: "北京市" },
+  { code: "110100", name: "北京市" },
+  { code: "110101", name: "东城区" },
+  { code: "110102", name: "西城区" },
   // ...
 ];
 ```
@@ -87,22 +88,22 @@ console.log(pca);
 > - options &lt;object&gt; 配置项
 > - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
 > - options.fieldNames &lt;{ code?: string; name?: string; children?: string; }&gt; 自定义字段名
-> - options.dataSource &lt;{ code: string; name: string; }&gt; 自定义数据源，默认 data
+> - options.dataSource &lt;{ code: string; name: string; }[]&gt; 自定义数据源，默认 data
 
 获取省/市/区三级联动数据。
 
 通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
 ```typescript
-import { getPCA } from 'lcn';
+import { getPCA } from "lcn";
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: '110000',
-    name: '北京市',
+    code: "110000",
+    name: "北京市",
     children: [
       // ...
     ],
@@ -112,14 +113,14 @@ console.log(data1);
 
 const data2 = getPCA({
   inland: true,
-  fieldNames: { code: 'value', name: 'label' },
+  fieldNames: { code: "value", name: "label" },
 });
 console.log(data2);
 
 [
   {
-    value: '110000',
-    label: '北京市',
+    value: "110000",
+    label: "北京市",
     children: [
       // ...
     ],
@@ -132,17 +133,20 @@ console.log(data2);
 
 获取省/市二级联动数据。参数及用法同 `getPCA` 方法。
 
-### parseAreaCode(areaCode)
+### parseAreaCode(areaCode, options?)
 
 > - areaCode &lt;string&gt; 地区码
+> - options &lt;object&gt; 配置项
+> - options.dataSource &lt;{ code: string; name: string; }[]&gt; 自定义数据源，默认 data
+> - options.ignoreCrownCountryCityName &lt;boolean&gt; 是否忽略直辖市或直辖县的市级名称，默认 false
 
 解析地区码，返回一个元祖 `[省,市,区]`
 
 ```typescript
-parseAreaCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseAreaCode('410100'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseAreaCode('410000'); // => [{ code: '410000', name: '河南省' }, null, null];
-parseAreaCode('000000'); // => [null, null, null];
+parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
+parseAreaCode("000000"); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正

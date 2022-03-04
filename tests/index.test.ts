@@ -1,4 +1,11 @@
-import { data, getPC, getPCA, splitPCA, parseAreaCode } from "../src";
+import {
+  data,
+  getPC,
+  getPCA,
+  splitPCA,
+  parseAreaCode,
+  isCrownCountryCityCode,
+} from "../src";
 import areasTest from "./shared/areasTest";
 import citiesTest from "./shared/citiesTest";
 import ProvincesTest from "./shared/provincesTest";
@@ -196,6 +203,45 @@ describe("module", () => {
       expect(parseAreas[0]).toEqual(results[0]);
       expect(parseAreas[1]).toEqual(results[1]);
       expect(parseAreas[2]).toEqual(results[2]);
+    });
+    it("ignoreCrownCountryCityName", () => {
+      const parseAreas = parseAreaCode("110102", {
+        ignoreCrownCountryCityName: true,
+      });
+      const results = [
+        { code: "110000", name: "北京市" },
+        { code: "110100", name: "" },
+        { code: "110102", name: "西城区" },
+      ];
+
+      expect(parseAreas.length).toBe(3);
+      expect(parseAreas[0]).toEqual(results[0]);
+      expect(parseAreas[1]).toEqual(results[1]);
+      expect(parseAreas[2]).toEqual(results[2]);
+    });
+  });
+
+  describe("isCrownCountryCityCode", () => {
+    it("true", () => {
+      // 310100', '500100', '500200', '120100', '469000', '659000', '419000', '429000'
+      expect(isCrownCountryCityCode("110100")).toBe(true);
+      expect(isCrownCountryCityCode("500100")).toBe(true);
+      expect(isCrownCountryCityCode("500200")).toBe(true);
+      expect(isCrownCountryCityCode("120100")).toBe(true);
+      expect(isCrownCountryCityCode("469000")).toBe(true);
+      expect(isCrownCountryCityCode("659000")).toBe(true);
+      expect(isCrownCountryCityCode("419000")).toBe(true);
+      expect(isCrownCountryCityCode("429000")).toBe(true);
+    });
+    it("false", () => {
+      expect(isCrownCountryCityCode("110102")).toBe(false);
+      expect(isCrownCountryCityCode("500102")).toBe(false);
+      expect(isCrownCountryCityCode("500202")).toBe(false);
+      expect(isCrownCountryCityCode("120102")).toBe(false);
+      expect(isCrownCountryCityCode("469002")).toBe(false);
+      expect(isCrownCountryCityCode("659002")).toBe(false);
+      expect(isCrownCountryCityCode("419002")).toBe(false);
+      expect(isCrownCountryCityCode("429002")).toBe(false);
     });
   });
 });

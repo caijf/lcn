@@ -6,6 +6,7 @@ import {
   isInland,
   getProvinceCode,
   getCityCode,
+  isCrownCountryCityCode,
 } from "./util";
 
 export {
@@ -16,6 +17,7 @@ export {
   isInland,
   getProvinceCode,
   getCityCode,
+  isCrownCountryCityCode,
 };
 
 export type DataType = typeof data;
@@ -161,11 +163,17 @@ type ParseItem = null | { code: string; name: string };
 // 解析地区码
 export function parseAreaCode(
   areaCode: string,
-  dataSource = data
+  options?: {
+    dataSource?: DataType;
+    ignoreCrownCountryCityName?: boolean; // 忽略直辖市或直辖县的市级名称
+  }
 ): [ParseItem, ParseItem, ParseItem] {
   if (typeof areaCode !== "string" || areaCode.length !== 6) {
     return [null, null, null];
   }
+
+  const { dataSource = data, ignoreCrownCountryCityName = false } =
+    options || {};
 
   const provinceCode = getProvinceCode(areaCode) + "0000";
   const cityCode = getCityCode(areaCode) + "00";
@@ -189,7 +197,13 @@ export function parseAreaCode(
     if (!province && item.code === provinceCode) {
       province = { ...item };
     } else if (hasCity && !city && item.code === cityCode) {
-      city = { ...item };
+      city = {
+        name:
+          ignoreCrownCountryCityName && isCrownCountryCityCode(item.code)
+            ? ""
+            : item.name,
+        code: item.code,
+      };
     } else if (hasArea && !area && item.code === areaCode) {
       area = { ...item };
     }
