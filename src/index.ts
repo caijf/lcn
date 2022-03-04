@@ -3,212 +3,198 @@ import {
   isAreaCode,
   isCityCode,
   isProvinceCode,
+  isInland,
   getProvinceCode,
-  filterInland,
   getCityCode,
-  CascadeData,
-  CascadeDataForm,
 } from "./util";
 
-export type { CascadeData, CascadeDataForm };
+export {
+  data,
+  isAreaCode,
+  isCityCode,
+  isProvinceCode,
+  isInland,
+  getProvinceCode,
+  getCityCode,
+};
 
-export interface CascaderOption {
+export type DataType = typeof data;
+
+export type CascaderOption = {
   inland?: boolean;
-  formatForm?: boolean;
-}
+  fieldNames?: {
+    code?: string;
+    name?: string;
+    children?: string;
+  };
+  dataSource?: DataType;
+};
 
-// 缓存数据
-let __provinces: typeof data; // 省级数据
-let __cities: typeof data; // 市级数据
-let __areas: typeof data; // 区级数据
-let __pca: CascadeData[]; // 省市区级联数据
-let __pc: CascadeData[]; // 省市级联数据
+export type CascadeData = {
+  code?: string;
+  name?: string;
+  children?: CascadeData[];
+  [key: string]: any;
+};
 
-// 获取省级数据
-function getProvinces() {
-  if (!__provinces) {
-    __provinces = data.filter((item) => isProvinceCode(item.code));
-  }
-  return __provinces;
-}
+// 默认字段名
+const defaultFieldNames = {
+  code: "code",
+  name: "name",
+  children: "children",
+};
 
-// 获取市级数据
-function getCities() {
-  if (!__cities) {
-    __cities = data.filter((item) => isCityCode(item.code));
-  }
-  return __cities;
-}
+// 将数据拆分成省市区数据
+export function splitPCA(opts?: {
+  dataSource?: DataType;
+  inland?: boolean;
+  province?: boolean;
+  city?: boolean;
+  area?: boolean;
+}) {
+  const {
+    province = true,
+    city = true,
+    area = true,
+    inland = false,
+    dataSource = data,
+  } = opts || {};
+  const provinces: DataType = [];
+  const cities: DataType = [];
+  const areas: DataType = [];
 
-// 获取区级数据
-function getAreas() {
-  if (!__areas) {
-    __areas = data.filter((item) => isAreaCode(item.code));
-  }
-  return __areas;
-}
-
-// 内部获取省市级联数据
-function initPC() {
-  __pc = [];
-  const provinces = getProvinces();
-  const cities = getCities();
-
-  provinces.forEach((item) => {
-    const newItem: CascadeData = {
-      ...item,
-    };
-    if (!newItem.children) {
-      newItem.children = [];
-    }
-
-    __pc.push(newItem);
-
-    cities.forEach((cityItem) => {
-      if (getProvinceCode(cityItem.code) === getProvinceCode(item.code)) {
-        newItem.children!.push(cityItem);
-      }
-    });
-  });
-}
-
-// 递归转换
-function recursionTransformFormat(datalist: CascadeData[]) {
-  const ret: CascadeDataForm[] = [];
-  datalist.forEach((item) => {
-    const newItem: CascadeDataForm = {
-      value: item.code,
-      label: item.name,
-    };
-    if (Array.isArray(item.children)) {
-      if (item.children.length > 0) {
-        newItem.children = recursionTransformFormat(item.children);
-      } else {
-        newItem.children = [];
+  dataSource.forEach((item) => {
+    if (!inland || isInland(item.code)) {
+      if (province && isProvinceCode(item.code)) {
+        provinces.push({ ...item });
+      } else if (city && isCityCode(item.code)) {
+        cities.push({ ...item });
+      } else if (area && isAreaCode(item.code)) {
+        areas.push({ ...item });
       }
     }
-    ret.push(newItem);
   });
-  return ret;
+  return { provinces, cities, areas };
 }
 
 // 获取省市联动数据
-function getPC(
-  options?: CascaderOption & { formatForm: true }
-): CascadeDataForm[];
-function getPC(
-  options?: CascaderOption & { formatForm?: false }
-): CascadeData[];
-function getPC(options?: CascaderOption) {
-  const { inland = false, formatForm = false } = options || {};
-  if (!__pc) {
-    initPC();
-  }
+export function getPC(options?: CascaderOption) {
+  const {
+    inland = false,
+    fieldNames: outFieldNames,
+    dataSource = data,
+  } = options || {};
+  const {
+    code: codeKey,
+    name: nameKey,
+    children: childrenKey,
+  } = { ...defaultFieldNames, ...outFieldNames };
+  const { provinces, cities } = splitPCA({ dataSource, inland, area: false });
 
-  let internalPC = __pc.slice();
+  return provinces.map((provItem) => {
+    const newProvItem: CascadeData = {
+      [codeKey]: provItem.code,
+      [nameKey]: provItem.name,
+      [childrenKey]: [],
+    };
 
-  if (inland) {
-    internalPC = filterInland(internalPC);
-  }
-
-  return formatForm ? recursionTransformFormat(internalPC) : internalPC;
-}
-
-function initPCA() {
-  const newCities: CascadeData[] = getCities().map((item) => ({ ...item }));
-
-  newCities.forEach((cityItem) => {
-    if (!cityItem.children) {
-      cityItem.children = [];
-    }
-
-    data.forEach((item) => {
-      if (
-        isAreaCode(item.code) &&
-        getCityCode(item.code) === getCityCode(cityItem.code)
-      ) {
-        cityItem.children!.push({ ...item });
+    cities.forEach((cityItem) => {
+      if (getProvinceCode(cityItem.code) === getProvinceCode(provItem.code)) {
+        newProvItem[childrenKey].push({
+          [codeKey]: cityItem.code,
+          [nameKey]: cityItem.name,
+        });
       }
     });
-  });
 
-  const newProvinces: CascadeData[] = getProvinces().map((item) => ({
-    ...item,
-  }));
-
-  newProvinces.forEach((item) => {
-    if (!item.children) {
-      item.children = [];
-    }
-    newCities.forEach((cityItem) => {
-      if (getProvinceCode(item.code) === getProvinceCode(cityItem.code)) {
-        item.children!.push(cityItem);
-      }
-    });
+    return newProvItem;
   });
-  __pca = newProvinces;
 }
 
 // 获取省市区联动数据
-function getPCA(
-  options?: CascaderOption & { formatForm: true }
-): CascadeDataForm[];
-function getPCA(
-  options?: CascaderOption & { formatForm?: false }
-): CascadeData[];
-function getPCA(options?: CascaderOption) {
-  const { inland = false, formatForm = false } = options || {};
-  if (!__pca) {
-    initPCA();
-  }
+export function getPCA(options?: CascaderOption) {
+  const {
+    inland = false,
+    fieldNames: outFieldNames,
+    dataSource = data,
+  } = options || {};
+  const {
+    code: codeKey,
+    name: nameKey,
+    children: childrenKey,
+  } = { ...defaultFieldNames, ...outFieldNames };
+  const { provinces, cities, areas } = splitPCA({ dataSource, inland });
 
-  let internalPCA = __pca.slice();
+  return provinces.map((provItem) => {
+    const newProvItem: CascadeData = {
+      [codeKey]: provItem.code,
+      [nameKey]: provItem.name,
+      [childrenKey]: [],
+    };
 
-  if (inland) {
-    internalPCA = filterInland(internalPCA);
-  }
+    cities.forEach((cityItem) => {
+      const newCityItem: CascadeData = {
+        [codeKey]: cityItem.code,
+        [nameKey]: cityItem.name,
+        [childrenKey]: [],
+      };
 
-  return formatForm ? recursionTransformFormat(internalPCA) : internalPCA;
+      areas.forEach((areaItem) => {
+        if (getCityCode(areaItem.code) === getCityCode(cityItem.code)) {
+          newCityItem[childrenKey].push({
+            [codeKey]: areaItem.code,
+            [nameKey]: areaItem.name,
+          });
+        }
+      });
+
+      if (getProvinceCode(provItem.code) === getProvinceCode(cityItem.code)) {
+        newProvItem[childrenKey].push(newCityItem);
+      }
+    });
+    return newProvItem;
+  });
 }
 
 type ParseItem = null | { code: string; name: string };
-type ParseProvinceItem = ParseItem;
-type ParseCityItem = ParseItem;
-type ParseAreaItem = ParseItem;
 
 // 解析地区码
-function parseAreaCode(
-  areaCode: string
-): [ParseProvinceItem, ParseCityItem, ParseAreaItem] {
+export function parseAreaCode(
+  areaCode: string,
+  dataSource = data
+): [ParseItem, ParseItem, ParseItem] {
   if (typeof areaCode !== "string" || areaCode.length !== 6) {
     return [null, null, null];
   }
 
   const provinceCode = getProvinceCode(areaCode) + "0000";
-  const provinceInfo = data.find((item) => item.code === provinceCode) || null;
-
-  if (areaCode === provinceCode) {
-    return [provinceInfo, null, null];
-  }
-
   const cityCode = getCityCode(areaCode) + "00";
-  const cityInfo = data.find((item) => item.code === cityCode) || null;
 
-  if (areaCode === cityCode) {
-    return [provinceInfo, cityInfo, null];
-  }
+  const hasCity = areaCode !== provinceCode;
+  const hasArea = hasCity && areaCode !== cityCode;
 
-  const areaInfo = data.find((item) => item.code === areaCode) || null;
+  let province: ParseItem = null;
+  let city: ParseItem = null;
+  let area: ParseItem = null;
 
-  return [provinceInfo, cityInfo, areaInfo];
+  dataSource.some((item) => {
+    if (
+      province &&
+      ((hasCity && city) || !hasCity) &&
+      ((hasArea && area) || !hasArea)
+    ) {
+      return true;
+    }
+
+    if (!province && item.code === provinceCode) {
+      province = { ...item };
+    } else if (hasCity && !city && item.code === cityCode) {
+      city = { ...item };
+    } else if (hasArea && !area && item.code === areaCode) {
+      area = { ...item };
+    }
+    return false;
+  });
+
+  return [province, city, area];
 }
-
-export {
-  data,
-  getProvinces,
-  getCities,
-  getAreas,
-  getPC,
-  getPCA,
-  parseAreaCode,
-};

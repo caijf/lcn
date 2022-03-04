@@ -40,59 +40,86 @@ yarn add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, getProvinces, getCities, getAreas } from "lcn";
+import { data, getPCA, getPC, parseAreaCode } from 'lcn';
 
-const pca = getPCA({ formatForm: true }); // 获取省市区三级联动表单格式数据
+// 获取内地省市区三级联动表单格式数据
+const pca = getPCA({
+  inland: true,
+  fieldNames: { code: 'value', name: 'label' },
+});
 console.log(pca);
 ```
 
 ## 文档
 
-- getPCA - 获取省/市/区三级联动数据
-- getPC - 获取省/市二级联动数据
-- data - 全部数据
-- getProvinces - 获取全部省份数据
-- getCities - 获取全部市级数据
-- getAreas - 获取全部区级数据
-- parseAreaCode - 解析地区码
+- 主要数据和方法
+
+  - data - 全部省市区数据
+  - getPCA - 获取省/市/区三级联动数据
+  - getPC - 获取省/市二级联动数据
+  - parseAreaCode - 解析地区码
+
+- 其他工具方法
+
+  - isProvinceCode - 是否为省级码
+  - isCityCode - 是否为市级码
+  - isAreaCode - 是否为区级码
+  - isInland - 是否为大陆内地区码
+  - getProvinceCode - 获取 2 位省级编码
+  - getCityCode - 获取 4 位市级编码
+
+### data
+
+全部省市区数据。
+
+```typescript
+[
+  { code: '110000', name: '北京市' },
+  { code: '110100', name: '北京市' },
+  { code: '110101', name: '东城区' },
+  { code: '110102', name: '西城区' },
+  // ...
+];
+```
 
 ### getPCA(options)
 
 > - options &lt;object&gt; 配置项
 > - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
-> - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
+> - options.fieldNames &lt;{ code?: string; name?: string; children?: string; }&gt; 自定义字段名
+> - options.dataSource &lt;{ code: string; name: string; }&gt; 自定义数据源，默认 data
 
 获取省/市/区三级联动数据。
 
-`formatForm` 为 `true` 时，数据可直接用于 `antd` `element-ui` 的表单组件中。
+通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
-```javascript
-import { getPCA } from "lcn";
+```typescript
+import { getPCA } from 'lcn';
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: "110000",
-    name: "北京市",
+    code: '110000',
+    name: '北京市',
     children: [
       // ...
     ],
   },
   // ...
-  { code: "710000", name: "台湾省" },
-  { code: "810000", name: "香港特别行政区" },
-  { code: "820000", name: "澳门特别行政区" },
 ];
 
-const data2 = getPCA({ inland: true, formatForm: true });
+const data2 = getPCA({
+  inland: true,
+  fieldNames: { code: 'value', name: 'label' },
+});
 console.log(data2);
 
 [
   {
-    value: "110000",
-    label: "北京市",
+    value: '110000',
+    label: '北京市',
     children: [
       // ...
     ],
@@ -103,64 +130,7 @@ console.log(data2);
 
 ### getPC(options)
 
-> - options &lt;object&gt; 配置项
-> - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
-> - options.formatForm &lt;boolean&gt; 数据处理为表单格式，即 `{ value, label, children? }`。默认为 `false`
-
-获取省/市二级联动数据。其余同 `getPCA` 方法。
-
-### data
-
-全部数据，无级联。
-
-```javascript
-[
-  { code: "110000", name: "北京市" },
-  { code: "110100", name: "北京市" },
-  { code: "110101", name: "东城区" },
-  { code: "110102", name: "西城区" },
-  // ...
-];
-```
-
-### getProvinces()
-
-获取全部省份数据。
-
-```javascript
-[
-  { code: "110000", name: "北京市" },
-  { code: "120000", name: "天津市" },
-  // ...
-];
-```
-
-### getCities()
-
-获取全部市级数据。
-
-```javascript
-[
-  // ...
-  { code: "130100", name: "石家庄市" },
-  { code: "130200", name: "唐山市" },
-  { code: "130300", name: "秦皇岛市" },
-  // ...
-];
-```
-
-### getAreas()
-
-获取全部区级数据。
-
-```javascript
-[
-  { code: "110101", name: "东城区" },
-  { code: "110102", name: "西城区" },
-  { code: "110105", name: "朝阳区" },
-  // ...
-];
-```
+获取省/市二级联动数据。参数及用法同 `getPCA` 方法。
 
 ### parseAreaCode(areaCode)
 
@@ -168,11 +138,11 @@ console.log(data2);
 
 解析地区码，返回一个元祖 `[省,市,区]`
 
-```javascript
-parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
-parseAreaCode("000000"); // => [null, null, null];
+```typescript
+parseAreaCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseAreaCode('410100'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseAreaCode('410000'); // => [{ code: '410000', name: '河南省' }, null, null];
+parseAreaCode('000000'); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正

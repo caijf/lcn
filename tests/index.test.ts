@@ -1,12 +1,4 @@
-import {
-  data,
-  getAreas,
-  getCities,
-  getProvinces,
-  getPC,
-  getPCA,
-  parseAreaCode,
-} from "../src";
+import { data, getPC, getPCA, splitPCA, parseAreaCode } from "../src";
 import areasTest from "./shared/areasTest";
 import citiesTest from "./shared/citiesTest";
 import ProvincesTest from "./shared/provincesTest";
@@ -24,6 +16,8 @@ import citiesJson from "../data/cities.json";
 import provincesJson from "../data/provinces.json";
 import pcJson from "../data/pc.json";
 import pcaJson from "../data/pca.json";
+
+const { provinces, cities, areas } = splitPCA();
 
 type CascadeData = {
   [key: string]: unknown;
@@ -84,8 +78,7 @@ describe("module", () => {
     });
   });
 
-  describe("getAreas", () => {
-    const areas = getAreas();
+  describe("areas", () => {
     areasTest(areas);
 
     it("equal data/areas.json", () => {
@@ -93,8 +86,7 @@ describe("module", () => {
     });
   });
 
-  describe("getCities", () => {
-    const cities = getCities();
+  describe("cities", () => {
     citiesTest(cities);
 
     it("equal data/cities.json", () => {
@@ -102,8 +94,7 @@ describe("module", () => {
     });
   });
 
-  describe("getProvinces", () => {
-    const provinces = getProvinces();
+  describe("provinces", () => {
     ProvincesTest(provinces);
 
     it("equal data/provinces.json", () => {
@@ -119,7 +110,7 @@ describe("module", () => {
       expect(pc).toEqual(pcJson);
     });
 
-    const pcForm = getPC({ formatForm: true });
+    const pcForm = getPC({ fieldNames: { code: "value", name: "label" } });
     pcFormTest(pcForm);
   });
 
@@ -128,7 +119,10 @@ describe("module", () => {
     pcTest(pcInland);
     inlandTest(pcInland);
 
-    const pcInlandForm = getPC({ inland: true, formatForm: true });
+    const pcInlandForm = getPC({
+      inland: true,
+      fieldNames: { code: "value", name: "label" },
+    });
     pcFormTest(pcInlandForm);
     inlandFormTest(pcInlandForm);
   });
@@ -141,7 +135,7 @@ describe("module", () => {
       expect(pca).toEqual(pcaJson);
     });
 
-    const pcaForm = getPCA({ formatForm: true });
+    const pcaForm = getPCA({ fieldNames: { code: "value", name: "label" } });
     pcaFormTest(pcaForm);
   });
 
@@ -150,7 +144,10 @@ describe("module", () => {
     pcaTest(pca);
     inlandTest(pca);
 
-    const pcaForm = getPCA({ inland: true, formatForm: true });
+    const pcaForm = getPCA({
+      inland: true,
+      fieldNames: { code: "value", name: "label" },
+    });
     pcaFormTest(pcaForm);
     inlandFormTest(pcaForm);
   });
