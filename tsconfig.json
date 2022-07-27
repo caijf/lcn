@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.rollup.json",
   "compilerOptions": {
+    "target": "ES5",
     "declaration": true,
     "emitDeclarationOnly": true
   }
