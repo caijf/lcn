@@ -8,7 +8,7 @@
 
 当前数据
 
-- [2020 年 12 月中华人民共和国县以上行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
+- [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
 
 ## 多种数据格式
 
@@ -40,12 +40,12 @@ yarn add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, parseAreaCode } from "lcn";
+import { data, getPCA, getPC, parseAreaCode } from 'lcn';
 
 // 获取内地省市区三级联动表单格式数据
 const pca = getPCA({
   inland: true,
-  fieldNames: { code: "value", name: "label" },
+  fieldNames: { code: 'value', name: 'label' },
 });
 console.log(pca);
 ```
@@ -75,10 +75,10 @@ console.log(pca);
 
 ```typescript
 [
-  { code: "110000", name: "北京市" },
-  { code: "110100", name: "北京市" },
-  { code: "110101", name: "东城区" },
-  { code: "110102", name: "西城区" },
+  { code: '110000', name: '北京市' },
+  { code: '110100', name: '北京市' },
+  { code: '110101', name: '东城区' },
+  { code: '110102', name: '西城区' },
   // ...
 ];
 ```
@@ -95,15 +95,15 @@ console.log(pca);
 通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
 ```typescript
-import { getPCA } from "lcn";
+import { getPCA } from 'lcn';
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: "110000",
-    name: "北京市",
+    code: '110000',
+    name: '北京市',
     children: [
       // ...
     ],
@@ -113,14 +113,14 @@ console.log(data1);
 
 const data2 = getPCA({
   inland: true,
-  fieldNames: { code: "value", name: "label" },
+  fieldNames: { code: 'value', name: 'label' },
 });
 console.log(data2);
 
 [
   {
-    value: "110000",
-    label: "北京市",
+    value: '110000',
+    label: '北京市',
     children: [
       // ...
     ],
@@ -143,10 +143,10 @@ console.log(data2);
 解析地区码，返回一个元祖 `[省,市,区]`
 
 ```typescript
-parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
-parseAreaCode("000000"); // => [null, null, null];
+parseAreaCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseAreaCode('410100'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseAreaCode('410000'); // => [{ code: '410000', name: '河南省' }, null, null];
+parseAreaCode('000000'); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正
@@ -184,7 +184,7 @@ parseAreaCode("000000"); // => [null, null, null];
     - **南沙群岛(460322)**
     - **中沙群岛的岛礁及其海域(460323)**
 
-### 4. 以下几个[特殊地级市]，属于“不设区的市”：
+### 4. 以下几个[特殊地级市]，属于“不设区的市”
 
 - 广东省东莞市(441900)
 - 广东省中山市(442000)
@@ -197,7 +197,7 @@ parseAreaCode("000000"); // => [null, null, null];
 - [国家统计局 - 统计用区划和城乡划分代码]
 - [特殊地级市]
 
-[民政部 - 行政区划代码]: http://www.mca.gov.cn/article/sj/xzqh/2020/
+[民政部 - 行政区划代码]: https://www.mca.gov.cn/article/sj/xzqh/
 [国家统计局 - 统计用区划和城乡划分代码]: http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
 [特殊地级市]: https://baike.baidu.com/item/%E5%9C%B0%E7%BA%A7%E5%B8%82/2089621?fr=aladdin#4_1
 [pca.json]: https://github.com/caijf/lcn/tree/master/data/pca.json

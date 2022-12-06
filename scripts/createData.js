@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('https');
 const path = require('path');
 const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
@@ -6,7 +6,7 @@ const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./ut
 const extendData = require('./extend');
 
 // 2020年12月中华人民共和国县以上行政区划代码
-const url = 'http://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html';
+const url = 'https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html';
 
 const root = path.join(__dirname, '../data/');
 
@@ -85,7 +85,7 @@ async function processDataAndWirteToFile(data) {
 // 创建数据
 function createData() {
   return new Promise((resolve, reject) => {
-    http.get(url, function (res) {
+    https.get(url, function (res) {
       let chunks = [];
       let size = 0;
 

@@ -6,8 +6,8 @@
   "module": "dist/index.esm.js",
   "types": "types/src/index.d.ts",
   "scripts": {
-    "build": "npm run build:npm && npm run build:types",
-    "build:npm": "rm -rf dist && rollup -c",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "rm -rf dist && rollup -c",
     "build:data": "rm -rf data && node scripts/index.js",
     "build:types": "rm -rf types && tsc --outDir types",
     "test": "jest --verbose",
