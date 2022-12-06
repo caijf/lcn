@@ -130,7 +130,7 @@ console.log(data2);
 > - options.dataSource &lt;{ code: string; name: string; }[]&gt; 自定义数据源，默认 data
 > - options.ignoreCrownCountryCityName &lt;boolean&gt; 是否忽略直辖市或直辖县的市级名称，默认 false
 
-解析地区码，返回一个元祖 `[省,市,区]`
+解析地区码，返回一个元组 `[省,市,区]`
 
 ```typescript
 parseAreaCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
