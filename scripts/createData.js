@@ -53,28 +53,33 @@ function processHtml(html) {
   return ret;
 }
 
-// 处理成map数据
-async function processMapData(data) {
-  const mapData = data.map(item => ([item.code, item.name]));
-  return writeToFile(DATA_MAP_FILE, JSON.stringify(mapData));
-}
+/**
+ * 处理map/省份/市级/区级数据
+ * @param {{code:string;name:string;}[]} data 省市区数据数组
+ * @returns {Promise<any>}
+ */
+async function processDataAndWirteToFile(data) {
+  const dataMap = [];
+  const provinces = [];
+  const cities = [];
+  const area = [];
 
-// 处理省份数据
-async function processProvince(data) {
-  const provinces = data.filter(item => isProvinceCode(item.code));
-  return writeToFile(PROVINCE_FILE, JSON.stringify(provinces));
-}
+  data.forEach(item => {
+    dataMap.push([item.code, item.name]);
+    if (isProvinceCode(item.code)) {
+      provinces.push(item);
+    } else if (isCityCode(item.code)) {
+      cities.push(item);
+    } else {
+      area.push(item);
+    }
+  });
 
-// 处理市级数据
-async function processCity(data) {
-  const cities = data.filter(item => isCityCode(item.code));
-  return writeToFile(CITY_FILE, JSON.stringify(cities));
-}
-
-// 处理区级数据
-async function processArea(data) {
-  const area = data.filter(item => !isProvinceCode(item.code) && !isCityCode(item.code));
-  return writeToFile(AREA_FILE, JSON.stringify(area));
+  const wp_all = writeToFile(DATA_MAP_FILE, JSON.stringify(dataMap));
+  const wp_provinces = writeToFile(PROVINCE_FILE, JSON.stringify(provinces));
+  const wp_cities = writeToFile(CITY_FILE, JSON.stringify(cities));
+  const wp_area = writeToFile(AREA_FILE, JSON.stringify(area));
+  return Promise.all([wp_all, wp_provinces, wp_cities, wp_area]);
 }
 
 // 创建数据
@@ -100,10 +105,7 @@ function createData() {
 
         try {
           await writeToFile(DATA_FILE, JSON.stringify(data));
-          await processMapData(data);
-          await processProvince(data);
-          await processCity(data);
-          await processArea(data);
+          await processDataAndWirteToFile(data);
 
           resolve();
         } catch (err) {
