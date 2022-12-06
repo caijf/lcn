@@ -2,26 +2,16 @@
 
 [![npm][npm]][npm-url] ![GitHub](https://img.shields.io/github/license/caijf/lcn.svg)
 
-中华人民共和国行政区划，省市区数据
+中华人民共和国行政区划，省市区数据。
 
-## 数据来源
+支持 umd es cjs 等格式。
 
-当前数据
+## 各版本对应的数据源
 
-- [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
-
-## 多种数据格式
-
-> 如果在客户端中使用，并且没有用到全部数据，建议保存对应数据到本地。比如只用到省市联动数据，将 `pc.json` 保存本地即可。
-
-| 文件             | 数据格式                       | 描述                 |
-| ---------------- | ------------------------------ | -------------------- |
-| [pca.json]       | Array<{code, name, children?}> | 省/市/区三级联动数据 |
-| [pc.json]        | Array<{code, name, children?}> | 省/市二级联动数据    |
-| [data.json]      | Array<{code, name}>            | 全部数据             |
-| [provinces.json] | Array<{code, name}>            | 省份数据             |
-| [cities.json]    | Array<{code, name}>            | 市级数据             |
-| [areas.json]     | Array<{code, name}>            | 区级数据             |
+| lcn 版本 | 数据源 |
+| --- | --- |
+| `v5.x` | [2021 年中华人民共和国县以上行政区划代码变更情况](https://www.mca.gov.cn/article/sj/xzqh/2021/20211201.html) |
+| `v1.x ~ v4.x` | [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html) |
 
 ## 使用
 
@@ -190,6 +180,19 @@ parseAreaCode('000000'); // => [null, null, null];
 - 广东省中山市(442000)
 - 甘肃省嘉峪关市(620200)
 - 海南省儋州市(460400)
+
+## 更多数据格式
+
+> 如果在客户端中使用，并且没有用到全部数据，建议保存对应数据到本地。比如只用到省市联动数据，将 `pc.json` 保存本地即可。
+
+| 文件             | 数据格式                       | 描述                 |
+| ---------------- | ------------------------------ | -------------------- |
+| [pca.json]       | Array<{code, name, children?}> | 省/市/区三级联动数据 |
+| [pc.json]        | Array<{code, name, children?}> | 省/市二级联动数据    |
+| [data.json]      | Array<{code, name}>            | 全部数据             |
+| [provinces.json] | Array<{code, name}>            | 省份数据             |
+| [cities.json]    | Array<{code, name}>            | 市级数据             |
+| [areas.json]     | Array<{code, name}>            | 区级数据             |
 
 ## 参考
 

@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./util');
 const extendData = require('./extend');
+const patch2021 = require('./patch2021');
 
 // 2020年12月中华人民共和国县以上行政区划代码
 const url = 'https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html';
@@ -99,7 +100,13 @@ function createData() {
         let str = iconv.decode(buf, 'utf8');
 
         // 输出标准数据文件
-        const data = [...processHtml(str), ...extendData.cities, ...extendData.areas].sort((a, b) => a.code - b.code);
+        let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];
+
+        // 2021年数据补丁
+        data = patch2021(data);
+
+        // 排序
+        data = data.sort((a, b) => a.code - b.code);
 
         checkDirExist(root);
 
