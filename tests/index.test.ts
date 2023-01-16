@@ -44,18 +44,18 @@ function countCascadeDataLength(cascadeData: CascadeData[]) {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getDiffAreas() {
-  const pcaAreas = [];
+  const pcaAreas: { code: string, name: string }[] = [];
   pcaJson.forEach((item) => {
     if (item?.children) {
       item.children.forEach((subItem) => {
         if (subItem?.children) {
-          pcaAreas.push(...subItem?.children);
+          pcaAreas.push(...(subItem?.children || {}));
         }
       });
     }
   });
 
-  const diffAreas = [];
+  const diffAreas: { code: string, name: string }[] = [];
 
   areasJson.forEach((item) => {
     if (!pcaAreas.find((pcaItem) => pcaItem.code === item.code)) {
@@ -134,6 +134,13 @@ describe("module", () => {
     inlandFormTest(pcInlandForm);
   });
 
+  describe("getPC emptyChildrenValue", () => {
+    const pc1 = getPC({ emptyChildrenValue: 'none' });
+    const pc2 = getPC({ emptyChildrenValue: 'null' });
+    expect(pc1).toMatchSnapshot();
+    expect(pc2).toMatchSnapshot();
+  });
+
   describe("getPCA", () => {
     const pca = getPCA();
     pcaTest(pca);
@@ -157,6 +164,13 @@ describe("module", () => {
     });
     pcaFormTest(pcaForm);
     inlandFormTest(pcaForm);
+  });
+
+  describe("getPCA emptyChildrenValue", () => {
+    const pca1 = getPCA({ emptyChildrenValue: 'none' });
+    const pca2 = getPCA({ emptyChildrenValue: 'null' });
+    expect(pca1).toMatchSnapshot();
+    expect(pca2).toMatchSnapshot();
   });
 
   describe("parseAreaCode", () => {

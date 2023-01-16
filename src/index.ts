@@ -30,12 +30,13 @@ export type CascaderOption = {
     children?: string;
   };
   dataSource?: DataType;
+  emptyChildrenValue?: 'none' | 'null' | 'array';
 };
 
 export type CascadeData = {
   code?: string;
   name?: string;
-  children?: CascadeData[];
+  children?: CascadeData[] | null;
   [key: string]: any;
 };
 
@@ -79,12 +80,22 @@ export function splitPCA(opts?: {
   return { provinces, cities, areas };
 }
 
+// 初始化children值
+function initChildrenValue(data: CascadeData, childrenKey: string, emptyChildrenValue: CascaderOption['emptyChildrenValue']) {
+  if (emptyChildrenValue === 'array') {
+    data[childrenKey] = [];
+  } else if (emptyChildrenValue === 'null') {
+    data[childrenKey] = null;
+  }
+}
+
 // 获取省市联动数据
 export function getPC(options?: CascaderOption) {
   const {
     inland = false,
     fieldNames: outFieldNames,
     dataSource = data,
+    emptyChildrenValue = 'array'
   } = options || {};
   const {
     code: codeKey,
@@ -96,12 +107,15 @@ export function getPC(options?: CascaderOption) {
   return provinces.map((provItem) => {
     const newProvItem: CascadeData = {
       [codeKey]: provItem.code,
-      [nameKey]: provItem.name,
-      [childrenKey]: [],
+      [nameKey]: provItem.name
     };
+    initChildrenValue(newProvItem, childrenKey, emptyChildrenValue);
 
     cities.forEach((cityItem) => {
       if (getProvinceCode(cityItem.code) === getProvinceCode(provItem.code)) {
+        if (!newProvItem[childrenKey]) {
+          newProvItem[childrenKey] = [];
+        }
         newProvItem[childrenKey].push({
           [codeKey]: cityItem.code,
           [nameKey]: cityItem.name,
@@ -119,6 +133,7 @@ export function getPCA(options?: CascaderOption) {
     inland = false,
     fieldNames: outFieldNames,
     dataSource = data,
+    emptyChildrenValue = 'array'
   } = options || {};
   const {
     code: codeKey,
@@ -130,19 +145,22 @@ export function getPCA(options?: CascaderOption) {
   return provinces.map((provItem) => {
     const newProvItem: CascadeData = {
       [codeKey]: provItem.code,
-      [nameKey]: provItem.name,
-      [childrenKey]: [],
+      [nameKey]: provItem.name
     };
+    initChildrenValue(newProvItem, childrenKey, emptyChildrenValue);
 
     cities.forEach((cityItem) => {
       const newCityItem: CascadeData = {
         [codeKey]: cityItem.code,
-        [nameKey]: cityItem.name,
-        [childrenKey]: [],
+        [nameKey]: cityItem.name
       };
+      initChildrenValue(newCityItem, childrenKey, emptyChildrenValue);
 
       areas.forEach((areaItem) => {
         if (getCityCode(areaItem.code) === getCityCode(cityItem.code)) {
+          if (!newCityItem[childrenKey]) {
+            newCityItem[childrenKey] = [];
+          }
           newCityItem[childrenKey].push({
             [codeKey]: areaItem.code,
             [nameKey]: areaItem.name,
@@ -151,6 +169,9 @@ export function getPCA(options?: CascaderOption) {
       });
 
       if (getProvinceCode(provItem.code) === getProvinceCode(cityItem.code)) {
+        if (!newProvItem[childrenKey]) {
+          newProvItem[childrenKey] = [];
+        }
         newProvItem[childrenKey].push(newCityItem);
       }
     });
