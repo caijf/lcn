@@ -79,6 +79,7 @@ console.log(pca);
 > - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
 > - options.fieldNames &lt;{ code?: string; name?: string; children?: string; }&gt; 自定义字段名
 > - options.dataSource &lt;{ code: string; name: string; }[]&gt; 自定义数据源，默认 data
+> - options.emptyChildrenValue &lt;'array' | 'null' | 'none'&gt; 子级为空时的值，默认 'array' 。array 表示为[]，null 表示为 null，none 表示删除该子级。
 
 获取省/市/区三级联动数据。
 
