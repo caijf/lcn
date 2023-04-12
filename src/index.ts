@@ -36,8 +36,12 @@ export type CascaderOption = {
 export type CascadeData = {
   code?: string;
   name?: string;
-  children?: CascadeData[] | null;
+  children?: CascadeData[];
   [key: string]: any;
+};
+
+export type CascadeDataWithNull = Omit<CascadeData, 'children'> & {
+  children?: CascadeDataWithNull[] | null;
 };
 
 // 默认字段名
@@ -90,6 +94,8 @@ function initChildrenValue(data: CascadeData, childrenKey: string, emptyChildren
 }
 
 // 获取省市联动数据
+export function getPC(options?: CascaderOption & { emptyChildrenValue: 'null' }): CascadeDataWithNull[];
+export function getPC(options?: CascaderOption): CascadeData[];
 export function getPC(options?: CascaderOption) {
   const {
     inland = false,
@@ -128,6 +134,8 @@ export function getPC(options?: CascaderOption) {
 }
 
 // 获取省市区联动数据
+export function getPCA(options?: CascaderOption & { emptyChildrenValue: 'null' }): CascadeDataWithNull[];
+export function getPCA(options?: CascaderOption): CascadeData[];
 export function getPCA(options?: CascaderOption) {
   const {
     inland = false,
