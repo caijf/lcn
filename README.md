@@ -10,7 +10,7 @@
 
 | lcn 版本 | 数据源 |
 | --- | --- |
-| `v5.x` | [2021 年中华人民共和国县以上行政区划代码变更情况](https://www.mca.gov.cn/article/sj/xzqh/2021/20211201.html) |
+| `v5.x` | [2022 年中华人民共和国行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2022/202201xzqh.html) |
 | `v1.x ~ v4.x` | [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html) |
 
 ## 使用

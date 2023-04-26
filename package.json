@@ -8,8 +8,8 @@
   "scripts": {
     "build": "npm run build:module && npm run build:types",
     "build:module": "rm -rf dist && rollup -c",
-    "build:data": "rm -rf data && node scripts/index.js",
     "build:types": "rm -rf types && tsc --outDir types",
+    "generator": "rm -rf data && node scripts/index.js",
     "test": "jest --verbose",
     "precommit": "lint-staged",
     "commit": "cz",

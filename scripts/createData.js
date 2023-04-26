@@ -4,10 +4,11 @@ const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./util');
 const extendData = require('./extend');
-const patch2021 = require('./patch2021');
+// const patch2021 = require('./patch2021');
 
-// 2020年12月中华人民共和国县以上行政区划代码
-const url = 'https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html';
+// 2022年中华人民共和国行政区划代码
+// 数据与2021年一致
+const url = 'https://www.mca.gov.cn/article/sj/xzqh/2022/202201xzqh.html';
 
 const root = path.join(__dirname, '../data/');
 
@@ -103,7 +104,7 @@ function createData() {
         let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];
 
         // 2021年数据补丁
-        data = patch2021(data);
+        // data = patch2021(data);
 
         // 排序
         data = data.sort((a, b) => a.code - b.code);
