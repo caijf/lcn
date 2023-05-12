@@ -1,7 +1,9 @@
-function pcTest(data) {
+import { CascadeData, CascadeDataWithNull } from '../../src';
+
+function pcTest(data: (CascadeData | CascadeDataWithNull)[]) {
   it("检查数据", () => {
-    expect(data[0].children.length).toBe(1);
-    expect(data[0].children[0]).toEqual({ code: "110100", name: "北京市" });
+    expect(data[0]!.children!.length).toBe(1);
+    expect(data[0]!.children![0]).toEqual({ code: "110100", name: "北京市" });
   });
 
   it("直辖市", () => {
@@ -32,13 +34,13 @@ function pcTest(data) {
 
   it("部分省补充县级行政区划", () => {
     const hn = data.find((item) => item.code === "460000");
-    expect(hn.children).toContainEqual({
+    expect(hn!.children).toContainEqual({
       code: "469000",
       name: "省直辖县级行政区划",
     });
 
     const xj = data.find((item) => item.code === "650000");
-    expect(xj.children).toContainEqual({
+    expect(xj!.children).toContainEqual({
       code: "659000",
       name: "自治区直辖县级行政区划",
     });

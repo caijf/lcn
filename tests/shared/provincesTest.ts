@@ -1,4 +1,6 @@
-function provincesTest(data) {
+import { CascadeData } from '../../src';
+
+function provincesTest(data: CascadeData[]) {
   it('检查数据', () => {
     expect(data.length).toBe(34);
     expect(data[0]).toEqual({ code: '110000', name: '北京市' });

@@ -32,7 +32,7 @@ export default {
     commonjs(),
     json(),
     typescript({
-      tsconfig: "./tsconfig.rollup.json"
+      tsconfig: "./tsconfig.build.json"
     })
   ]
 }
