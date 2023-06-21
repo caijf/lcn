@@ -8,7 +8,7 @@ const extendData = require('./extend');
 
 // 2022年中华人民共和国行政区划代码
 // 数据与2021年一致
-const url = 'https://www.mca.gov.cn/article/sj/xzqh/2022/202201xzqh.html';
+const url = 'https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html';
 
 const root = path.join(__dirname, '../data/');
 
