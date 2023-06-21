@@ -8,7 +8,7 @@
 
 当前数据
 
-- [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html)
+- [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2020/20201201.html)
 
 ## 多种数据格式
 
@@ -167,17 +167,17 @@ parseAreaCode('000000'); // => [null, null, null];
 ### 2. 部分省补充县级行政区划
 
 - 海南省(460000)
-  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/46.html)(469000)**
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/46.html)(469000)**
 - 新疆维吾尔自治区(650000)
-  - **[自治区直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/65.html)(659000)**
+  - **[自治区直辖县级行政区划](http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/65.html)(659000)**
 - 河南省(410000)
-  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/41.html)(419000)**
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/41.html)(419000)**
 - 湖北省(420000)
-  - **[省直辖县级行政区划](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2021/42.html)(429000)**
+  - **[省直辖县级行政区划](http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/42.html)(429000)**
 
 ### 3. 海南省三沙市补充区级数据
 
-> 数据源自[国家统计局 - 统计用区划和城乡划分代码](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/46/4603.html)
+> 数据源自[国家统计局 - 统计用区划和城乡划分代码](http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/46/4603.html)
 
 - 海南省(460000)
   - 三沙市(460300)
@@ -198,8 +198,8 @@ parseAreaCode('000000'); // => [null, null, null];
 - [国家统计局 - 统计用区划和城乡划分代码]
 - [特殊地级市]
 
-[民政部 - 行政区划代码]: https://www.mca.gov.cn/article/sj/xzqh/
-[国家统计局 - 统计用区划和城乡划分代码]: http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/
+[民政部 - 行政区划代码]: https://www.mca.gov.cn/n156/index.html
+[国家统计局 - 统计用区划和城乡划分代码]: http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2020/index.html
 [特殊地级市]: https://baike.baidu.com/item/%E5%9C%B0%E7%BA%A7%E5%B8%82/2089621?fr=aladdin#4_1
 [pca.json]: https://github.com/caijf/lcn/tree/master/data/pca.json
 [pc.json]: https://github.com/caijf/lcn/tree/master/data/pc.json

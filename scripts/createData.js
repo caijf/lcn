@@ -6,7 +6,7 @@ const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./ut
 const extendData = require('./extend');
 
 // 2020年12月中华人民共和国县以上行政区划代码
-const url = 'https://www.mca.gov.cn/article/sj/xzqh/2020/20201201.html';
+const url = 'https://www.mca.gov.cn/mzsj/xzqh/2020/20201201.html';
 
 const root = path.join(__dirname, '../data/');
 
