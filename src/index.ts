@@ -191,7 +191,7 @@ type ParseItem = null | { code: string; name: string };
 
 // 解析地区码
 export function parseAreaCode(
-  areaCode: string,
+  areaCode?: string,
   options?: {
     dataSource?: DataType;
     ignoreCrownCountryCityName?: boolean; // 忽略直辖市或直辖县的市级名称
