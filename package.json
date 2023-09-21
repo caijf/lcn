@@ -9,21 +9,17 @@
     "build": "npm run build:module && npm run build:types",
     "build:module": "rm -rf dist && rollup -c",
     "build:data": "rm -rf data && node scripts/index.js",
-    "build:types": "rm -rf types && tsc --outDir types",
+    "build:types": "rm -rf types &&  tsc -p tsconfig.build.json -d --emitDeclarationOnly --outDir types",
     "test": "jest --verbose",
-    "precommit": "lint-staged",
     "commit": "cz",
-    "prepublishOnly": "npm run build && npm test"
+    "tsc": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "config": {
     "commitizen": {
@@ -69,7 +65,7 @@
     "cheerio": "^1.0.0-rc.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.28.0",
-    "husky": "4",
+    "husky": "^8.0.0",
     "iconv-lite": "^0.6.2",
     "jest": "^27.0.1",
     "lint-staged": "^11.0.0",
@@ -81,5 +77,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "tag": "latest-4"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
   }
 }

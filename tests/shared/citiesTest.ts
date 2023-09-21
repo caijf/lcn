@@ -1,4 +1,6 @@
-function citiesTest(data) {
+import { DataType } from "../../src";
+
+function citiesTest(data: DataType) {
   it("检查数据", () => {
     expect(data.length).toBe(342);
     // expect(data[0]).toEqual({ code: '110100', name: '北京市' });
