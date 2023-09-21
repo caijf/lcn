@@ -6,8 +6,9 @@
   "module": "dist/index.esm.js",
   "types": "types/src/index.d.ts",
   "scripts": {
-    "build": "npm run build:module && npm run build:types",
-    "build:module": "rm -rf dist && rollup -c",
+    "build": "rm -rf dist && npm run build:module && npm run build:umd && npm run build:types",
+    "build:module": "rollup -c rollup.module.config.mjs",
+    "build:umd": "rollup -c rollup.umd.config.mjs",
     "build:types": "rm -rf types && tsc -p tsconfig.build.json -d --emitDeclarationOnly --outDir types",
     "generator": "rm -rf data && node scripts/index.js",
     "test": "jest --verbose",
@@ -69,10 +70,12 @@
     "prettier": "^3.0.3",
     "rollup": "^3.29.2",
     "ts-jest": "^29.1.1",
-    "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
   }
 }
