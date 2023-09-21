@@ -12,3 +12,4 @@ node_modules
 _build
 package-lock.json
 yarn.lock
+pnpm-lock.yaml

@@ -44,7 +44,7 @@ function countCascadeDataLength(cascadeData: CascadeData[]) {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getDiffAreas() {
-  const pcaAreas: { code: string, name: string }[] = [];
+  const pcaAreas: { code: string; name: string }[] = [];
   pcaJson.forEach((item) => {
     if (item?.children) {
       item.children.forEach((subItem) => {
@@ -55,7 +55,7 @@ function getDiffAreas() {
     }
   });
 
-  const diffAreas: { code: string, name: string }[] = [];
+  const diffAreas: { code: string; name: string }[] = [];
 
   areasJson.forEach((item) => {
     if (!pcaAreas.find((pcaItem) => pcaItem.code === item.code)) {
@@ -63,7 +63,7 @@ function getDiffAreas() {
     }
   });
 
-  console.log(diffAreas);
+  // console.log(diffAreas);
 }
 
 describe("module", () => {
@@ -135,8 +135,8 @@ describe("module", () => {
   });
 
   describe("getPC emptyChildrenValue", () => {
-    const pc1 = getPC({ emptyChildrenValue: 'none' });
-    const pc2 = getPC({ emptyChildrenValue: 'null' });
+    const pc1 = getPC({ emptyChildrenValue: "none" });
+    const pc2 = getPC({ emptyChildrenValue: "null" });
     expect(pc1).toMatchSnapshot();
     expect(pc2).toMatchSnapshot();
   });
@@ -167,8 +167,8 @@ describe("module", () => {
   });
 
   describe("getPCA emptyChildrenValue", () => {
-    const pca1 = getPCA({ emptyChildrenValue: 'none' });
-    const pca2 = getPCA({ emptyChildrenValue: 'null' });
+    const pca1 = getPCA({ emptyChildrenValue: "none" });
+    const pca2 = getPCA({ emptyChildrenValue: "null" });
     expect(pca1).toMatchSnapshot();
     expect(pca2).toMatchSnapshot();
   });
