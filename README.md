@@ -27,25 +27,27 @@
 
 ### 安装
 
-```bash
+```shell
 npm install lcn
 ```
 
-or
-
-```bash
+```shell
 yarn add lcn
+```
+
+```shell
+pnpm add lcn
 ```
 
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, parseAreaCode } from 'lcn';
+import { data, getPCA, getPC, parseAreaCode } from "lcn";
 
 // 获取内地省市区三级联动表单格式数据
 const pca = getPCA({
   inland: true,
-  fieldNames: { code: 'value', name: 'label' },
+  fieldNames: { code: "value", name: "label" },
 });
 console.log(pca);
 ```
@@ -75,10 +77,10 @@ console.log(pca);
 
 ```typescript
 [
-  { code: '110000', name: '北京市' },
-  { code: '110100', name: '北京市' },
-  { code: '110101', name: '东城区' },
-  { code: '110102', name: '西城区' },
+  { code: "110000", name: "北京市" },
+  { code: "110100", name: "北京市" },
+  { code: "110101", name: "东城区" },
+  { code: "110102", name: "西城区" },
   // ...
 ];
 ```
@@ -96,15 +98,15 @@ console.log(pca);
 通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
 ```typescript
-import { getPCA } from 'lcn';
+import { getPCA } from "lcn";
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: '110000',
-    name: '北京市',
+    code: "110000",
+    name: "北京市",
     children: [
       // ...
     ],
@@ -114,14 +116,14 @@ console.log(data1);
 
 const data2 = getPCA({
   inland: true,
-  fieldNames: { code: 'value', name: 'label' },
+  fieldNames: { code: "value", name: "label" },
 });
 console.log(data2);
 
 [
   {
-    value: '110000',
-    label: '北京市',
+    value: "110000",
+    label: "北京市",
     children: [
       // ...
     ],
@@ -144,10 +146,10 @@ console.log(data2);
 解析地区码，返回一个元祖 `[省,市,区]`
 
 ```typescript
-parseAreaCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseAreaCode('410100'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseAreaCode('410000'); // => [{ code: '410000', name: '河南省' }, null, null];
-parseAreaCode('000000'); // => [null, null, null];
+parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
+parseAreaCode("000000"); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正
