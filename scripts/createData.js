@@ -1,27 +1,32 @@
-const https = require('https');
-const path = require('path');
-const cheerio = require('cheerio');
-const iconv = require('iconv-lite');
-const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./util');
-const extendData = require('./extend');
+const path = require("path");
+const { getBuffer } = require("node-useful");
+const cheerio = require("cheerio");
+const iconv = require("iconv-lite");
+const {
+  checkDirExist,
+  writeToFile,
+  isProvinceCode,
+  isCityCode,
+} = require("./util");
+const extendData = require("./extend");
 // const patch2021 = require('./patch2021');
 
 // 2022年中华人民共和国行政区划代码
 // 数据与2021年一致
-const url = 'https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html';
+const url = "https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html";
 
-const root = path.join(__dirname, '../data/');
+const root = path.join(__dirname, "../data/");
 
 // 数据文件
-const DATA_FILE = path.join(root, 'data.json');
+const DATA_FILE = path.join(root, "data.json");
 // map数据文件
-const DATA_MAP_FILE = path.join(root, 'data-map.json');
+const DATA_MAP_FILE = path.join(root, "data-map.json");
 // 省份数据
-const PROVINCE_FILE = path.join(root, 'provinces.json');
+const PROVINCE_FILE = path.join(root, "provinces.json");
 // 市级数据
-const CITY_FILE = path.join(root, 'cities.json');
+const CITY_FILE = path.join(root, "cities.json");
 // 区级数据
-const AREA_FILE = path.join(root, 'areas.json');
+const AREA_FILE = path.join(root, "areas.json");
 
 /**
  * 处理标准数据 -> code/name
@@ -35,19 +40,19 @@ const AREA_FILE = path.join(root, 'areas.json');
  */
 function processHtml(html) {
   const $ = cheerio.load(html);
-  const $tr = $('tr');
+  const $tr = $("tr");
 
   const ret = [];
 
   $tr.each(function () {
     const $this = $(this);
-    const code = $this.find('td').eq(1).text();
-    const name = $this.find('td').eq(2).text();
+    const code = $this.find("td").eq(1).text();
+    const name = $this.find("td").eq(2).text();
 
     if (code && name && !isNaN(code)) {
       ret.push({
         code: code.trim(),
-        name: name.trim()
+        name: name.trim(),
       });
     }
   });
@@ -66,7 +71,7 @@ async function processDataAndWirteToFile(data) {
   const cities = [];
   const area = [];
 
-  data.forEach(item => {
+  data.forEach((item) => {
     dataMap.push([item.code, item.name]);
     if (isProvinceCode(item.code)) {
       provinces.push(item);
@@ -85,46 +90,23 @@ async function processDataAndWirteToFile(data) {
 }
 
 // 创建数据
-function createData() {
-  return new Promise((resolve, reject) => {
-    https.get(url, function (res) {
-      let chunks = [];
-      let size = 0;
+async function createData() {
+  const buf = await getBuffer(url);
+  let str = iconv.decode(buf, "utf8");
 
-      res.on('data', function (data) {
-        chunks.push(data);
-        size += data.length;
-      });
-      res.on('end', async function () {
-        // 防止中文乱码
-        let buf = Buffer.concat(chunks, size);
-        let str = iconv.decode(buf, 'utf8');
+  // 输出标准数据文件
+  let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];
 
-        // 输出标准数据文件
-        let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];
+  // 2021年数据补丁
+  // data = patch2021(data);
 
-        // 2021年数据补丁
-        // data = patch2021(data);
+  // 排序
+  data = data.sort((a, b) => a.code - b.code);
 
-        // 排序
-        data = data.sort((a, b) => a.code - b.code);
+  checkDirExist(root);
 
-        checkDirExist(root);
-
-        try {
-          await writeToFile(DATA_FILE, JSON.stringify(data));
-          await processDataAndWirteToFile(data);
-
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
-      })
-    }).on('error', function (err) {
-      console.log('获取数据失败');
-      reject(err);
-    });
-  });
+  await writeToFile(DATA_FILE, JSON.stringify(data));
+  await processDataAndWirteToFile(data);
 }
 
 module.exports = createData;
