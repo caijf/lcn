@@ -13,7 +13,7 @@
     "generator": "rm -rf data && node scripts/index.js",
     "test": "jest --verbose",
     "commit": "cz",
-    "prepublishOnly": "npm run build && pnpm test",
+    "prepublishOnly": "npm run build && npm test",
     "tsc": "tsc --noEmit",
     "prepare": "husky"
   },

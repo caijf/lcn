@@ -1,8 +1,8 @@
-import { DataType } from '../../src';
+import { DataType } from "../../src";
 
 function dataTest(data: DataType) {
   it("检查数据", () => {
-    expect(data.length).toBe(3220);
+    expect(data.length).toBe(3221);
     expect(data[0]).toEqual({ code: "110000", name: "北京市" });
     expect(data[data.length - 1]).toEqual({
       code: "820000",

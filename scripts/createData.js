@@ -13,7 +13,7 @@ const extendData = require("./extend");
 
 // 2022年中华人民共和国行政区划代码
 // 数据与2021年一致
-const url = "https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html";
+const url = "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html";
 
 const root = path.join(__dirname, "../data/");
 
@@ -52,7 +52,7 @@ function processHtml(html) {
     if (code && name && !isNaN(code)) {
       ret.push({
         code: code.trim(),
-        name: name.trim(),
+        name: name.trim().replace("*", ""), // 标记“*”的行政区划代码第三、四位90表示省（自治区）直辖县级行政区划汇总码。
       });
     }
   });

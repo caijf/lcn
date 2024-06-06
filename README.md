@@ -8,10 +8,11 @@
 
 ## 各版本对应的数据源
 
-| lcn 版本      | 数据源                                                                                               |
-| ------------- | ---------------------------------------------------------------------------------------------------- |
-| `v5.x`        | [2022 年中华人民共和国行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html)           |
-| `v1.x ~ v4.x` | [2020 年 12 月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2020/20201201.html) |
+| lcn 版本      | 数据源                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------- |
+| `v6.x`        | [2023年中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html)   |
+| `v5.x`        | [2022年中华人民共和国行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html)         |
+| `v1.x ~ v4.x` | [2020年12月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2020/20201201.html) |
 
 ## 使用
 
@@ -121,6 +122,8 @@ console.log(data2);
   // ...
 ];
 ```
+
+_如果需要转换不同字段，推荐使用 [`util-helpers.transformFieldNames`](https://doly-dev.github.io/util-helpers/module-Tree.html#.transformFieldNames) 方法处理_
 
 ### getPC(options)
 
