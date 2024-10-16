@@ -1,6 +1,6 @@
 {
   "name": "lcn",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "中华人民共和国行政区划，省市区数据",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
