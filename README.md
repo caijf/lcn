@@ -33,9 +33,9 @@ pnpm add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, parseAreaCode } from "lcn";
+import { data, getPCA, getPC, parseCode } from "lcn";
 
-// 获取内地省市区三级联动表单格式数据
+// 获取内地省市区级联表单格式数据
 const pca = getPCA({
   inland: true,
   fieldNames: { code: "value", name: "label" },
@@ -48,9 +48,9 @@ console.log(pca);
 - 主要数据和方法
 
   - data - 全部省市区数据
-  - getPCA - 获取省/市/区三级联动数据
-  - getPC - 获取省/市二级联动数据
-  - parseAreaCode - 解析地区码
+  - getPCA - 获取省/市/区级联数据
+  - getPC - 获取省/市级联数据
+  - parseCode - 解析区县编码
 
 - 其他工具方法
 
@@ -61,6 +61,7 @@ console.log(pca);
   - getProvinceCode - 获取 2 位省级编码
   - getCityCode - 获取 4 位市级编码
   - isCrownCountryCityCode - 是否为直辖市或直辖县的市级编码
+  - getAreaCodeByNameAndCityCode - 通过区县名称和市编码反查区县编码
 
 ### data
 
@@ -79,12 +80,12 @@ console.log(pca);
 ### getPCA(options)
 
 > - options &lt;object&gt; 配置项
-> - options.inland &lt;boolean&gt; 仅包含内地数据。默认为 `false`
+> - options.inland &lt;boolean&gt; 仅包含中国大陆内地数据。默认为 `false`
 > - options.fieldNames &lt;{ code?: string; name?: string; children?: string; }&gt; 自定义字段名
 > - options.dataSource &lt;{ code: string; name: string; }[]&gt; 自定义数据源，默认 data
 > - options.emptyChildrenValue &lt;'array' | 'null' | 'none'&gt; 子级为空时的值，默认 'array' 。array 表示为[]，null 表示为 null，none 表示删除该子级。
 
-获取省/市/区三级联动数据。
+获取省/市/区级联数据。
 
 通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
@@ -127,9 +128,9 @@ _如果需要转换不同字段，推荐使用 [`util-helpers.transformFieldName
 
 ### getPC(options)
 
-获取省/市二级联动数据。参数及用法同 `getPCA` 方法。
+获取省/市级联数据。参数及用法同 `getPCA` 方法。
 
-### parseAreaCode(areaCode, options?)
+### parseCode(areaCode, options?)
 
 > - areaCode &lt;string&gt; 地区码
 > - options &lt;object&gt; 配置项
@@ -139,10 +140,10 @@ _如果需要转换不同字段，推荐使用 [`util-helpers.transformFieldName
 解析地区码，返回一个元组 `[省,市,区]`
 
 ```typescript
-parseAreaCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseAreaCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseAreaCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
-parseAreaCode("000000"); // => [null, null, null];
+parseCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
+parseCode("000000"); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正
@@ -189,16 +190,16 @@ parseAreaCode("000000"); // => [null, null, null];
 
 ## 更多数据格式
 
-> 如果在客户端中使用，并且没有用到全部数据，建议保存对应数据到本地。比如只用到省市联动数据，将 `pc.json` 保存本地即可。
+> 如果在客户端中使用，并且没有用到全部数据，建议保存对应数据到本地。比如只用到省市级联数据，将 `pc.json` 保存本地即可。
 
-| 文件             | 数据格式                       | 描述                 |
-| ---------------- | ------------------------------ | -------------------- |
-| [pca.json]       | Array<{code, name, children?}> | 省/市/区三级联动数据 |
-| [pc.json]        | Array<{code, name, children?}> | 省/市二级联动数据    |
-| [data.json]      | Array<{code, name}>            | 全部数据             |
-| [provinces.json] | Array<{code, name}>            | 省份数据             |
-| [cities.json]    | Array<{code, name}>            | 市级数据             |
-| [areas.json]     | Array<{code, name}>            | 区级数据             |
+| 文件             | 数据格式                       | 描述             |
+| ---------------- | ------------------------------ | ---------------- |
+| [pca.json]       | Array<{code, name, children?}> | 省/市/区级联数据 |
+| [pc.json]        | Array<{code, name, children?}> | 省/市级联数据    |
+| [data.json]      | Array<{code, name}>            | 全部数据         |
+| [provinces.json] | Array<{code, name}>            | 省份数据         |
+| [cities.json]    | Array<{code, name}>            | 市级数据         |
+| [areas.json]     | Array<{code, name}>            | 区级数据         |
 
 ## 参考
 

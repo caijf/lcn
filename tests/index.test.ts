@@ -3,8 +3,9 @@ import {
   getPC,
   getPCA,
   splitPCA,
-  parseAreaCode,
+  parseCode,
   isCrownCountryCityCode,
+  getAreaCodeByNameAndCityCode,
 } from "../src";
 import areasTest from "./shared/areasTest";
 import citiesTest from "./shared/citiesTest";
@@ -76,7 +77,7 @@ describe("module", () => {
       // 测试级联数据数量
       const pcaLen = countCascadeDataLength(pcaJson);
       expect(pcaLen).toEqual(
-        provincesJson.length + citiesJson.length + areasJson.length
+        provincesJson.length + citiesJson.length + areasJson.length,
       );
 
       // 测试级联数据数量
@@ -173,9 +174,9 @@ describe("module", () => {
     expect(pca2).toMatchSnapshot();
   });
 
-  describe("parseAreaCode", () => {
+  describe("parseCode", () => {
     it("success", () => {
-      const parseAreas = parseAreaCode("410102");
+      const parseAreas = parseCode("410102");
       const results = [
         { code: "410000", name: "河南省" },
         { code: "410100", name: "郑州市" },
@@ -188,7 +189,7 @@ describe("module", () => {
       expect(parseAreas[2]).toEqual(results[2]);
     });
     it("not area", () => {
-      const parseAreas = parseAreaCode("410100");
+      const parseAreas = parseCode("410100");
       const results = [
         { code: "410000", name: "河南省" },
         { code: "410100", name: "郑州市" },
@@ -201,7 +202,7 @@ describe("module", () => {
       expect(parseAreas[2]).toEqual(results[2]);
     });
     it("not city", () => {
-      const parseAreas = parseAreaCode("410000");
+      const parseAreas = parseCode("410000");
       const results = [{ code: "410000", name: "河南省" }, null, null];
 
       expect(parseAreas.length).toBe(3);
@@ -210,7 +211,7 @@ describe("module", () => {
       expect(parseAreas[2]).toEqual(results[2]);
     });
     it("fail", () => {
-      const parseAreas = parseAreaCode("100000");
+      const parseAreas = parseCode("100000");
       const results = [null, null, null];
 
       expect(parseAreas.length).toBe(3);
@@ -219,7 +220,7 @@ describe("module", () => {
       expect(parseAreas[2]).toEqual(results[2]);
     });
     it("ignoreCrownCountryCityName", () => {
-      const parseAreas = parseAreaCode("110102", {
+      const parseAreas = parseCode("110102", {
         ignoreCrownCountryCityName: true,
       });
       const results = [
@@ -256,6 +257,24 @@ describe("module", () => {
       expect(isCrownCountryCityCode("659002")).toBe(false);
       expect(isCrownCountryCityCode("419002")).toBe(false);
       expect(isCrownCountryCityCode("429002")).toBe(false);
+    });
+  });
+
+  describe("getAreaCodeByNameAndCityCode", () => {
+    it("basic", () => {
+      const areaCode1 = getAreaCodeByNameAndCityCode("海沧区", "350200");
+      expect(areaCode1).toBe("350205");
+    });
+
+    it("error data return `undefined`", () => {
+      const areaCode1 = getAreaCodeByNameAndCityCode("海沧区123", "350200");
+      expect(areaCode1).toBeUndefined();
+
+      const areaCode2 = getAreaCodeByNameAndCityCode("", "350200");
+      expect(areaCode2).toBeUndefined();
+
+      const areaCode3 = getAreaCodeByNameAndCityCode("海沧区", "");
+      expect(areaCode3).toBeUndefined();
     });
   });
 });
