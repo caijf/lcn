@@ -6,7 +6,7 @@ describe("data/data-map.json", () => {
   });
 
   it("检查数据", () => {
-    expect(dataMap.length).toBe(3221);
+    expect(dataMap.length).toBe(3223);
     expect(dataMap[0]).toEqual(["110000", "北京市"]);
     expect(dataMap[dataMap.length - 1]).toEqual(["820000", "澳门特别行政区"]);
     // 包含省

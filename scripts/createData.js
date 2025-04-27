@@ -11,9 +11,8 @@ const {
 const extendData = require("./extend");
 // const patch2021 = require('./patch2021');
 
-// 2022年中华人民共和国行政区划代码
-// 数据与2021年一致
-const url = "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html";
+// 2024年中华人民共和国县以上行政区划代码
+const url = "https://www.mca.gov.cn/mzsj/xzqh/2025/202401xzqh.html";
 
 const root = path.join(__dirname, "../data/");
 
@@ -96,9 +95,6 @@ async function createData() {
 
   // 输出标准数据文件
   let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];
-
-  // 2021年数据补丁
-  // data = patch2021(data);
 
   // 排序
   data = data.sort((a, b) => a.code - b.code);
