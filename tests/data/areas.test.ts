@@ -1,8 +1,8 @@
-import areas from "../../data/areas.json";
-import areasTest from "../shared/areasTest";
-import definedTest from "../shared/definedTest";
+import areas from '../../data/areas.json';
+import areasTest from '../shared/areasTest';
+import definedTest from '../shared/definedTest';
 
-describe("data/areas.json", () => {
+describe('data/areas.json', () => {
   definedTest(areas);
   areasTest(areas);
 });

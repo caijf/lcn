@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const path = require("path");
-const { writeToFile, getProvinceCode, getCityCode } = require("./util");
-const createData = require("./createData");
+const path = require('path');
+const { writeToFile, getProvinceCode, getCityCode } = require('./util');
+const createData = require('./createData');
 
-const root = path.join(__dirname, "../data/");
+const root = path.join(__dirname, '../data/');
 
 // 省市区级联数据
-const PROVINCE_CITY_AREA = path.join(root, "pca.json");
+const PROVINCE_CITY_AREA = path.join(root, 'pca.json');
 // 省市级联数据
-const PROVINCE_CITY = path.join(root, "pc.json");
+const PROVINCE_CITY = path.join(root, 'pc.json');
 
 // 过滤区级数据
 function filterArea(data) {
@@ -17,7 +17,7 @@ function filterArea(data) {
       return item;
     }
     const newItem = {
-      ...item,
+      ...item
     };
     newItem.children = newItem.children.map((subItem) => {
       delete subItem.children;
@@ -29,17 +29,17 @@ function filterArea(data) {
 
 createData().then(() => {
   const originData = {
-    data: require("../data/data.json"),
-    province: require("../data/provinces.json"),
-    city: require("../data/cities.json"),
-    area: require("../data/areas.json"),
+    data: require('../data/data.json'),
+    province: require('../data/provinces.json'),
+    city: require('../data/cities.json'),
+    area: require('../data/areas.json')
   };
 
   // 级联补充市级数据，联动区级
   const cities = originData.city.map((item) => {
     const cityCode = getCityCode(item.code);
     const newItem = {
-      ...item,
+      ...item
     };
 
     if (!newItem.children) {
@@ -57,7 +57,7 @@ createData().then(() => {
   const provinces = originData.province.map((item) => {
     const provinceCode = getProvinceCode(item.code);
     const newItem = {
-      ...item,
+      ...item
     };
 
     cities.forEach((cityItem) => {

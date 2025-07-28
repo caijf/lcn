@@ -1,32 +1,27 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const path = require("path");
-const { getBuffer } = require("node-useful");
-const cheerio = require("cheerio");
-const iconv = require("iconv-lite");
-const {
-  checkDirExist,
-  writeToFile,
-  isProvinceCode,
-  isCityCode,
-} = require("./util");
-const extendData = require("./extend");
+const path = require('path');
+const { getBuffer } = require('node-useful');
+const cheerio = require('cheerio');
+const iconv = require('iconv-lite');
+const { checkDirExist, writeToFile, isProvinceCode, isCityCode } = require('./util');
+const extendData = require('./extend');
 // const patch2021 = require('./patch2021');
 
 // 2024年中华人民共和国县以上行政区划代码
-const url = "https://www.mca.gov.cn/mzsj/xzqh/2025/202401xzqh.html";
+const url = 'https://www.mca.gov.cn/mzsj/xzqh/2025/202401xzqh.html';
 
-const root = path.join(__dirname, "../data/");
+const root = path.join(__dirname, '../data/');
 
 // 数据文件
-const DATA_FILE = path.join(root, "data.json");
+const DATA_FILE = path.join(root, 'data.json');
 // map数据文件
-const DATA_MAP_FILE = path.join(root, "data-map.json");
+const DATA_MAP_FILE = path.join(root, 'data-map.json');
 // 省份数据
-const PROVINCE_FILE = path.join(root, "provinces.json");
+const PROVINCE_FILE = path.join(root, 'provinces.json');
 // 市级数据
-const CITY_FILE = path.join(root, "cities.json");
+const CITY_FILE = path.join(root, 'cities.json');
 // 区级数据
-const AREA_FILE = path.join(root, "areas.json");
+const AREA_FILE = path.join(root, 'areas.json');
 
 /**
  * 处理标准数据 -> code/name
@@ -40,19 +35,19 @@ const AREA_FILE = path.join(root, "areas.json");
  */
 function processHtml(html) {
   const $ = cheerio.load(html);
-  const $tr = $("tr");
+  const $tr = $('tr');
 
   const ret = [];
 
   $tr.each(function () {
     const $this = $(this);
-    const code = $this.find("td").eq(1).text();
-    const name = $this.find("td").eq(2).text();
+    const code = $this.find('td').eq(1).text();
+    const name = $this.find('td').eq(2).text();
 
     if (code && name && !isNaN(code)) {
       ret.push({
         code: code.trim(),
-        name: name.trim().replace("*", ""), // 标记“*”的行政区划代码第三、四位90表示省（自治区）直辖县级行政区划汇总码。
+        name: name.trim().replace('*', '') // 标记“*”的行政区划代码第三、四位90表示省（自治区）直辖县级行政区划汇总码。
       });
     }
   });
@@ -92,7 +87,7 @@ async function processDataAndWirteToFile(data) {
 // 创建数据
 async function createData() {
   const buf = await getBuffer(url);
-  let str = iconv.decode(buf, "utf8");
+  let str = iconv.decode(buf, 'utf8');
 
   // 输出标准数据文件
   let data = [...processHtml(str), ...extendData.cities, ...extendData.areas];

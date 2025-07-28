@@ -17,10 +17,10 @@
  */
 function normalizeCode(value: any, min = 2) {
   if (value == null) {
-    return "";
+    return '';
   }
-  const result = typeof value === "string" ? value : String(value);
-  return result.length >= min ? result : "";
+  const result = typeof value === 'string' ? value : String(value);
+  return result.length >= min ? result : '';
 }
 
 // 是否为有效的省市区编码。
@@ -30,12 +30,12 @@ const _isValidCode = (code: string) => {
 
 // 是否为省级编码
 const _isProvinceCode = (code: string) => {
-  return code.substring(2, 6) === "0000";
+  return code.substring(2, 6) === '0000';
 };
 
 // 是否为市级编码
 const _isCityCode = (code: string) => {
-  return !_isProvinceCode(code) && code.substring(4, 6) === "00";
+  return !_isProvinceCode(code) && code.substring(4, 6) === '00';
 };
 
 /**
@@ -111,15 +111,11 @@ export function isCityCode(code?: string) {
  */
 export function isAreaCode(code?: string) {
   const realCode = normalizeCode(code);
-  return (
-    _isValidCode(realCode) &&
-    !_isProvinceCode(realCode) &&
-    !_isCityCode(realCode)
-  );
+  return _isValidCode(realCode) && !_isProvinceCode(realCode) && !_isCityCode(realCode);
 }
 
 // 非内地省代码
-const notInlandProvinceCode = ["71", "81", "82"];
+const notInlandProvinceCode = ['71', '81', '82'];
 
 /**
  * 判断是否为内地省市区。
@@ -141,15 +137,15 @@ export const isInland = (code?: string) => {
 // ref: scripts/extend.js
 // 直辖县的市级
 const crownCountryCityCodes = [
-  "110100",
-  "310100",
-  "500100",
-  "500200",
-  "120100",
-  "469000",
-  "659000",
-  "419000",
-  "429000",
+  '110100',
+  '310100',
+  '500100',
+  '500200',
+  '120100',
+  '469000',
+  '659000',
+  '419000',
+  '429000'
 ];
 
 /**
@@ -165,5 +161,4 @@ const crownCountryCityCodes = [
  *
  * isCrownCountryCityCode('441300'); // fasle
  */
-export const isCrownCountryCityCode = (code?: string) =>
-  crownCountryCityCodes.includes(code!);
+export const isCrownCountryCityCode = (code?: string) => crownCountryCityCodes.includes(code!);

@@ -1,4 +1,4 @@
-import data from "../data/data-map.json";
+import data from '../data/data-map.json';
 
 /**
  * 全部省市区数据。

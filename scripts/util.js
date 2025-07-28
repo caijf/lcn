@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require("fs");
+const fs = require('fs');
 
 /**
  * 检查路径是否存在 如果不存在则创建路径
  * @param {string} folderpath 文件路径
  */
 function checkDirExist(folderpath) {
-  const pathArr = folderpath.split("/");
-  let _path = "";
+  const pathArr = folderpath.split('/');
+  let _path = '';
   for (let i = 0; i < pathArr.length; i++) {
-    if (pathArr[i] === "." && i === 0) {
+    if (pathArr[i] === '.' && i === 0) {
       _path = pathArr[i];
     } else if (pathArr[i]) {
       _path += `/${pathArr[i]}`;
@@ -27,7 +27,7 @@ function checkDirExist(folderpath) {
 function writeToFile(filename, data) {
   let str = data;
 
-  if (typeof data !== "string") {
+  if (typeof data !== 'string') {
     str = JSON.stringify(data);
   }
 
@@ -56,12 +56,12 @@ function getCityCode(code) {
 
 // 是否为省份码
 function isProvinceCode(code) {
-  return code.substr(2, 4) === "0000";
+  return code.substr(2, 4) === '0000';
 }
 
 // 是否为市级码
 function isCityCode(code) {
-  return !isProvinceCode(code) && code.substr(4, 2) === "00";
+  return !isProvinceCode(code) && code.substr(4, 2) === '00';
 }
 
 module.exports = {
@@ -70,5 +70,5 @@ module.exports = {
   isProvinceCode,
   isCityCode,
   getProvinceCode,
-  getCityCode,
+  getCityCode
 };
