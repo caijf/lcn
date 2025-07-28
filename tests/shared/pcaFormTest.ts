@@ -1,4 +1,4 @@
-import { CascadeData } from '../../src';
+import { CascadeData } from "../../src";
 
 function pcaFormTest(data: CascadeData[]) {
   it("检查数据", () => {

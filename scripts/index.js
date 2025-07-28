@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require("path");
 const { writeToFile, getProvinceCode, getCityCode } = require("./util");
 const createData = require("./createData");

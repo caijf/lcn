@@ -1,4 +1,4 @@
-import { DataType } from '../../src';
+import { DataType } from "../../src";
 
 function citiesTest(data: DataType) {
   it("检查数据", () => {

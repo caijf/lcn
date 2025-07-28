@@ -1,4 +1,4 @@
-import { CascadeData, CascadeDataWithNull } from '../../src';
+import { CascadeData, CascadeDataWithNull } from "../../src";
 
 function pcTest(data: (CascadeData | CascadeDataWithNull)[]) {
   it("检查数据", () => {
