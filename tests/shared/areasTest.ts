@@ -2,7 +2,7 @@ import { DataType } from "../../src";
 
 function areasTest(data: DataType) {
   it("检查数据", () => {
-    expect(data.length).toBe(2847);
+    expect(data.length).toBe(2849);
     expect(data[0]).toEqual({ code: "110101", name: "东城区" });
     expect(data[data.length - 1]).toEqual({ code: "659012", name: "白杨市" });
     // 不包含市

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[` 1`] = `
 [
@@ -12451,6 +12451,14 @@ exports[` 3`] = `
       },
       {
         "children": [
+          {
+            "code": "460302",
+            "name": "西沙区",
+          },
+          {
+            "code": "460303",
+            "name": "南沙区",
+          },
           {
             "code": "460321",
             "name": "西沙群岛",
@@ -26088,6 +26096,14 @@ exports[` 4`] = `
       },
       {
         "children": [
+          {
+            "code": "460302",
+            "name": "西沙区",
+          },
+          {
+            "code": "460303",
+            "name": "南沙区",
+          },
           {
             "code": "460321",
             "name": "西沙群岛",
