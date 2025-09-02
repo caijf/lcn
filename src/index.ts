@@ -50,6 +50,11 @@ export type CascaderOption = {
    * `array` 表示为`[]`，`null` 表示为 `null`，`none` 表示删除该子级。
    */
   emptyChildrenValue?: 'none' | 'null' | 'array';
+
+  /**
+   * 忽略直辖市或省直辖县的市级。默认 `false`。
+   */
+  ignoreCrownCountryCity?: boolean;
 };
 
 export type CascadeData = {
@@ -172,36 +177,56 @@ export function getPC(options?: CascaderOption) {
     inland = false,
     fieldNames: outFieldNames,
     dataSource = data,
-    emptyChildrenValue = 'array'
+    emptyChildrenValue = 'array',
+    ignoreCrownCountryCity = false
   } = options || {};
   const {
     code: codeKey,
     name: nameKey,
     children: childrenKey
   } = { ...defaultFieldNames, ...outFieldNames };
-  const { provinces, cities } = splitPCA({ dataSource, inland, area: false });
 
-  return provinces.map((provItem) => {
-    const newProvItem: CascadeData = {
-      [codeKey]: provItem.code,
-      [nameKey]: provItem.name
-    };
-    initChildrenValue(newProvItem, childrenKey, emptyChildrenValue);
+  const result: Record<string, CascadeData> = {};
 
-    cities.forEach((cityItem) => {
-      if (getProvinceCode(cityItem.code) === getProvinceCode(provItem.code)) {
-        if (!newProvItem[childrenKey]) {
-          newProvItem[childrenKey] = [];
-        }
-        newProvItem[childrenKey].push({
-          [codeKey]: cityItem.code,
-          [nameKey]: cityItem.name
-        });
+  dataSource.forEach((item) => {
+    if (!inland || isInland(item.code)) {
+      const provinceCode = getProvinceCode(item.code);
+      if (!result[provinceCode]) {
+        result[provinceCode] = {};
+        initChildrenValue(result[provinceCode], childrenKey, emptyChildrenValue);
       }
-    });
 
-    return newProvItem;
+      if (isProvinceCode(item.code)) {
+        result[provinceCode][codeKey] = item.code;
+        result[provinceCode][nameKey] = item.name;
+      } else {
+        if (isCityCode(item.code)) {
+          if (!ignoreCrownCountryCity || !isCrownCountryCityCode(item.code)) {
+            if (!result[provinceCode][childrenKey]) {
+              result[provinceCode][childrenKey] = [];
+            }
+            result[provinceCode][childrenKey].push({
+              [codeKey]: item.code,
+              [nameKey]: item.name
+            });
+          }
+        } else if (ignoreCrownCountryCity && isAreaCode(item.code)) {
+          const cityCode = getCityCode(item.code) + '00';
+          if (isCrownCountryCityCode(cityCode)) {
+            if (!result[provinceCode][childrenKey]) {
+              result[provinceCode][childrenKey] = [];
+            }
+            result[provinceCode][childrenKey].push({
+              [codeKey]: item.code,
+              [nameKey]: item.name
+            });
+          }
+        }
+      }
+    }
   });
+
+  return Object.values(result);
 }
 
 /**
@@ -247,10 +272,10 @@ export function getPC(options?: CascaderOption) {
  * // ]
  */
 export function getPCA(
-  options?: CascaderOption & { emptyChildrenValue: 'null' }
+  options?: Omit<CascaderOption, 'ignoreCrownCountryCity'> & { emptyChildrenValue: 'null' }
 ): CascadeDataWithNull[];
-export function getPCA(options?: CascaderOption): CascadeData[];
-export function getPCA(options?: CascaderOption) {
+export function getPCA(options?: Omit<CascaderOption, 'ignoreCrownCountryCity'>): CascadeData[];
+export function getPCA(options?: Omit<CascaderOption, 'ignoreCrownCountryCity'>) {
   const {
     inland = false,
     fieldNames: outFieldNames,
@@ -262,43 +287,51 @@ export function getPCA(options?: CascaderOption) {
     name: nameKey,
     children: childrenKey
   } = { ...defaultFieldNames, ...outFieldNames };
-  const { provinces, cities, areas } = splitPCA({ dataSource, inland });
 
-  return provinces.map((provItem) => {
-    const newProvItem: CascadeData = {
-      [codeKey]: provItem.code,
-      [nameKey]: provItem.name
-    };
-    initChildrenValue(newProvItem, childrenKey, emptyChildrenValue);
+  const provinceResult: Record<string, CascadeData> = {};
+  const cityResult: Record<string, CascadeData> = {};
 
-    cities.forEach((cityItem) => {
-      const newCityItem: CascadeData = {
-        [codeKey]: cityItem.code,
-        [nameKey]: cityItem.name
-      };
-      initChildrenValue(newCityItem, childrenKey, emptyChildrenValue);
+  dataSource.forEach((item) => {
+    if (!inland || isInland(item.code)) {
+      const provinceCode = getProvinceCode(item.code);
+      const cityCode = getCityCode(item.code);
 
-      areas.forEach((areaItem) => {
-        if (getCityCode(areaItem.code) === getCityCode(cityItem.code)) {
-          if (!newCityItem[childrenKey]) {
-            newCityItem[childrenKey] = [];
+      if (!provinceResult[provinceCode]) {
+        provinceResult[provinceCode] = {};
+        initChildrenValue(provinceResult[provinceCode], childrenKey, emptyChildrenValue);
+      }
+
+      if (isProvinceCode(item.code)) {
+        provinceResult[provinceCode][codeKey] = item.code;
+        provinceResult[provinceCode][nameKey] = item.name;
+      } else {
+        if (!cityResult[cityCode]) {
+          cityResult[cityCode] = {};
+          initChildrenValue(cityResult[cityCode], childrenKey, emptyChildrenValue);
+
+          if (!provinceResult[provinceCode][childrenKey]) {
+            provinceResult[provinceCode][childrenKey] = [];
           }
-          newCityItem[childrenKey].push({
-            [codeKey]: areaItem.code,
-            [nameKey]: areaItem.name
+          provinceResult[provinceCode][childrenKey].push(cityResult[cityCode]);
+        }
+
+        if (isCityCode(item.code)) {
+          cityResult[cityCode][codeKey] = item.code;
+          cityResult[cityCode][nameKey] = item.name;
+        } else if (isAreaCode(item.code)) {
+          if (!cityResult[cityCode][childrenKey]) {
+            cityResult[cityCode][childrenKey] = [];
+          }
+          cityResult[cityCode][childrenKey].push({
+            [codeKey]: item.code,
+            [nameKey]: item.name
           });
         }
-      });
-
-      if (getProvinceCode(provItem.code) === getProvinceCode(cityItem.code)) {
-        if (!newProvItem[childrenKey]) {
-          newProvItem[childrenKey] = [];
-        }
-        newProvItem[childrenKey].push(newCityItem);
       }
-    });
-    return newProvItem;
+    }
   });
+
+  return Object.values(provinceResult);
 }
 
 type ParseItem = null | { code: string; name: string };
@@ -309,7 +342,7 @@ type ParseItem = null | { code: string; name: string };
  * @param {string} code 省市区编码。
  * @param {Object} [options] 配置项。
  * @param {boolean} [options.dataSource=data] 自定义数据源。默认 `data`。
- * @param {boolean} [options.ignoreCrownCountryCityName=false] 忽略直辖县市名称。默认 `false`。
+ * @param {boolean} [options.ignoreCrownCountryCityName=false] 忽略直辖市或省直辖县的市级名称。默认 `false`。如果为 `true`，则直辖市或省直辖县的市级名称返回`''`。
  * @returns {Array} 返回一个元组数组，对应省市区（某个没找到的返回 null）。
  * @example
  * parseCode('410102');
@@ -333,9 +366,9 @@ export function parseCode(
     dataSource?: DataType;
 
     /**
-     * 忽略直辖县市名称。默认 `false`。
+     * 忽略直辖市或省直辖县的市级名称。默认 `false`。如果为 `true`，则直辖市或省直辖县的市级名称返回`''`。
      */
-    ignoreCrownCountryCityName?: boolean; // 忽略直辖市或直辖县的市级名称
+    ignoreCrownCountryCityName?: boolean;
   }
 ): [ParseItem, ParseItem, ParseItem] {
   if (typeof code !== 'string' || code.length !== 6) {

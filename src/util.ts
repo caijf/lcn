@@ -149,10 +149,10 @@ const crownCountryCityCodes = [
 ];
 
 /**
- * 判断是否为直辖市或直辖县的市级。
+ * 判断是否为直辖市或省直辖县的市级。
  *
  * @param code 要检查的编码。
- * @returns 如果是直辖县的市级，返回 `true`，否则返回 `false`。
+ * @returns 如果是直辖市或省直辖县的市级，返回 `true`，否则返回 `false`。
  * @example
  * isCrownCountryCityCode('110100'); // true
  * isCrownCountryCityCode('310100'); // true

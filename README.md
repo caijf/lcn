@@ -8,11 +8,11 @@
 
 ## 各版本对应的数据源
 
-| lcn 版本      | 数据源                                                                                            |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| `v7.x`        | [2024年中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2025/202401xzqh.html)   |
-| `v6.x`        | [2023年中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html)   |
-| `v5.x`        | [2022年中华人民共和国行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html)         |
+| lcn 版本 | 数据源 |
+| --- | --- |
+| `v7.x` | [2024年中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2025/202401xzqh.html) |
+| `v6.x` | [2023年中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html) |
+| `v5.x` | [2022年中华人民共和国行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2022/202201xzqh.html) |
 | `v1.x ~ v4.x` | [2020年12月中华人民共和国县以上行政区划代码](https://www.mca.gov.cn/mzsj/xzqh/2020/20201201.html) |
 
 ## 使用
@@ -34,12 +34,12 @@ pnpm add lcn
 ### 示例
 
 ```typescript
-import { data, getPCA, getPC, parseCode } from "lcn";
+import { data, getPCA, getPC, parseCode } from 'lcn';
 
 // 获取内地省市区级联表单格式数据
 const pca = getPCA({
   inland: true,
-  fieldNames: { code: "value", name: "label" },
+  fieldNames: { code: 'value', name: 'label' }
 });
 console.log(pca);
 ```
@@ -47,14 +47,12 @@ console.log(pca);
 ## 文档
 
 - 主要数据和方法
-
   - data - 全部省市区数据
   - getPCA - 获取省/市/区级联数据
   - getPC - 获取省/市级联数据
   - parseCode - 解析区县编码
 
 - 其他工具方法
-
   - isProvinceCode - 是否为省级码
   - isCityCode - 是否为市级码
   - isAreaCode - 是否为区级码
@@ -70,10 +68,10 @@ console.log(pca);
 
 ```typescript
 [
-  { code: "110000", name: "北京市" },
-  { code: "110100", name: "北京市" },
-  { code: "110101", name: "东城区" },
-  { code: "110102", name: "西城区" },
+  { code: '110000', name: '北京市' },
+  { code: '110100', name: '北京市' },
+  { code: '110101', name: '东城区' },
+  { code: '110102', name: '西城区' }
   // ...
 ];
 ```
@@ -91,36 +89,36 @@ console.log(pca);
 通过自定义字段名，可将数据成直接用于 `antd` `element-ui` 的表单组件中。
 
 ```typescript
-import { getPCA } from "lcn";
+import { getPCA } from 'lcn';
 
 const data1 = getPCA();
 console.log(data1);
 
 [
   {
-    code: "110000",
-    name: "北京市",
+    code: '110000',
+    name: '北京市',
     children: [
       // ...
-    ],
-  },
+    ]
+  }
   // ...
 ];
 
 const data2 = getPCA({
   inland: true,
-  fieldNames: { code: "value", name: "label" },
+  fieldNames: { code: 'value', name: 'label' }
 });
 console.log(data2);
 
 [
   {
-    value: "110000",
-    label: "北京市",
+    value: '110000',
+    label: '北京市',
     children: [
       // ...
-    ],
-  },
+    ]
+  }
   // ...
 ];
 ```
@@ -129,7 +127,110 @@ _如果需要转换不同字段，推荐使用 [`util-helpers.transformFieldName
 
 ### getPC(options)
 
-获取省/市级联数据。参数及用法同 `getPCA` 方法。
+获取省/市级联数据。参数及用法和 `getPCA` 方法相同。
+
+但是 `getPC` 比 `getPCA` 方法多一个 `ignoreCrownCountryCity` 参数。
+
+如果 `ignoreCrownCountryCity` 为 `true`，则会忽略直辖市或省直辖县的市级，将直辖市的区和省直辖县的县添加到省份数据子集。例如：
+
+```typescript
+// 正常情况下
+const pc1 = getPC();
+console.log(pc1);
+
+[
+  {
+    code: '110000',
+    name: '北京市',
+    children: [{ code: '110100', name: '北京市' }]
+  },
+  {
+    code: '500000',
+    name: '重庆市',
+    children: [
+      { code: '500100', name: '重庆市' },
+      { code: '500200', name: '县' }
+    ]
+  }
+  // ...
+];
+
+// 忽略直辖市或省直辖县的市级，并将直辖市的区和省直辖县的县添加到省份数据子集
+const pc2 = getPC({
+  ignoreCrownCountryCity: true
+});
+console.log(pc2);
+
+[
+  {
+    code: '110000',
+    name: '北京市',
+    children: [
+      { code: '110101', name: '东城区' },
+      { code: '110102', name: '西城区' },
+      { code: '110105', name: '朝阳区' },
+      { code: '110106', name: '丰台区' },
+      { code: '110107', name: '石景山区' },
+      { code: '110108', name: '海淀区' },
+      { code: '110109', name: '门头沟区' },
+      { code: '110111', name: '房山区' },
+      { code: '110112', name: '通州区' },
+      { code: '110113', name: '顺义区' },
+      { code: '110114', name: '昌平区' },
+      { code: '110115', name: '大兴区' },
+      { code: '110116', name: '怀柔区' },
+      { code: '110117', name: '平谷区' },
+      { code: '110118', name: '密云区' },
+      { code: '110119', name: '延庆区' }
+    ]
+  },
+  {
+    code: '500000',
+    name: '重庆市',
+    children: [
+      { code: '500101', name: '万州区' },
+      { code: '500102', name: '涪陵区' },
+      { code: '500103', name: '渝中区' },
+      { code: '500104', name: '大渡口区' },
+      { code: '500105', name: '江北区' },
+      { code: '500106', name: '沙坪坝区' },
+      { code: '500107', name: '九龙坡区' },
+      { code: '500108', name: '南岸区' },
+      { code: '500109', name: '北碚区' },
+      { code: '500110', name: '綦江区' },
+      { code: '500111', name: '大足区' },
+      { code: '500112', name: '渝北区' },
+      { code: '500113', name: '巴南区' },
+      { code: '500114', name: '黔江区' },
+      { code: '500115', name: '长寿区' },
+      { code: '500116', name: '江津区' },
+      { code: '500117', name: '合川区' },
+      { code: '500118', name: '永川区' },
+      { code: '500119', name: '南川区' },
+      { code: '500120', name: '璧山区' },
+      { code: '500151', name: '铜梁区' },
+      { code: '500152', name: '潼南区' },
+      { code: '500153', name: '荣昌区' },
+      { code: '500154', name: '开州区' },
+      { code: '500155', name: '梁平区' },
+      { code: '500156', name: '武隆区' },
+      { code: '500229', name: '城口县' },
+      { code: '500230', name: '丰都县' },
+      { code: '500231', name: '垫江县' },
+      { code: '500233', name: '忠县' },
+      { code: '500235', name: '云阳县' },
+      { code: '500236', name: '奉节县' },
+      { code: '500237', name: '巫山县' },
+      { code: '500238', name: '巫溪县' },
+      { code: '500240', name: '石柱土家族自治县' },
+      { code: '500241', name: '秀山土家族苗族自治县' },
+      { code: '500242', name: '酉阳土家族苗族自治县' },
+      { code: '500243', name: '彭水苗族土家族自治县' }
+    ]
+  }
+  // ...
+];
+```
 
 ### parseCode(areaCode, options?)
 
@@ -141,10 +242,10 @@ _如果需要转换不同字段，推荐使用 [`util-helpers.transformFieldName
 解析地区码，返回一个元组 `[省,市,区]`
 
 ```typescript
-parseCode("410102"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
-parseCode("410100"); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
-parseCode("410000"); // => [{ code: '410000', name: '河南省' }, null, null];
-parseCode("000000"); // => [null, null, null];
+parseCode('410102'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, { code: '410102', name: '中原区' }];
+parseCode('410100'); // => [{ code: '410000', name: '河南省' }, { code: '410100', name: '郑州市' }, null];
+parseCode('410000'); // => [{ code: '410000', name: '河南省' }, null, null];
+parseCode('000000'); // => [null, null, null];
 ```
 
 ## 注意，以下数据修正
